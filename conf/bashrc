@@ -1,0 +1,90 @@
+[ -z "$PS1" ] && return
+
+set -o vi
+set -o notify
+
+shopt -s cdspell
+shopt -s checkwinsize
+shopt -s cdable_vars
+shopt -s checkhash
+shopt -s sourcepath
+shopt -s no_empty_cmd_completion
+shopt -s extglob
+shopt -s cmdhist    # attempt to save all lines of a multiple-line command in same entry
+shopt -s histappend # append to history rather than overwrite
+shopt -s histreedit # user given opportunity to re-edit a failed history substitution
+shopt -s histverify # results of history substitution are not immediately passed to the shell parser
+
+#-----------------------------------------------------------------------------
+
+stty erase 
+bind '"\e[3~": vi-delete'
+bind '"\e[1~": beginning-of-line'
+bind '"\e[4~": end-of-line'
+
+trap "source ~/.bashrc" RTMIN+8
+
+#-----------------------------------------------------------------------------
+
+export LANG=en_US.utf8
+export EDITOR=vim
+export HSTSIZE=1000
+export HISTCONTROL=ignoreboth:erasedups
+export HISTTIMEFORMAT='%Y-%m-%d %H:%M:%S  '
+
+export PAGER=less
+export LESS='-e -F -g -M -Q -R -X -z-4 -~'
+
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+
+#-----------------------------------------------------------------------------
+
+[ -f /etc/bash.bashrc ] && . /etc/bash.bashrc
+[ -f /etc/bash_completion ] && ! shopt -oq posix && . /etc/bash_completion
+[ -f /etc/bash_completion.d/git ] && . /etc/bash_completion.d/git
+
+#-----------------------------------------------------------------------------
+
+if [ -d "$HOME/.conf/util" ]
+then
+    export PATH="$HOME/.conf/util:$PATH"
+fi
+
+for config_file in ~/.conf/bash/*
+do
+    . $config_file
+done
+
+_is_console=0
+[[ ${TERM} == 'linux' && ! $_is_console ]] && _is_console=1
+export TERM=linux
+
+#-----------------------------------------------------------------------------
+
+if [ $_is_console == 1 ]
+then
+    prm c
+else
+    prm 1
+fi
+
+#-----------------------------------------------------------------------------
+
+title
+[ -f "$HOME/.localrc" ] && . "$HOME/.localrc"
+[ $_is_console == 1 ] && notitle
+
+#-----------------------------------------------------------------------------
+
+if [ -f ~/.env ]
+then
+    . ~/.env 2> /dev/null
+    builtin cd $PWD
+    rm ~/.env
+fi

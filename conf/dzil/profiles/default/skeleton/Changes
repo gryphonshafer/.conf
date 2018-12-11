@@ -1,0 +1,4 @@
+Revision history for {{ ( my $name = $dist->name ) =~ s/\-/::/g; $name }}
+
+{{ '{{$NEXT}}' }}
+        - First version, released on an unsuspecting world.

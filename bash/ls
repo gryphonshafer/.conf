@@ -1,0 +1,52 @@
+#!/bin/bash
+
+alias ls="ls -Fv --group-directories-first --color=auto"
+    # prefix type, human-readable, natural sort, dirs first, color
+
+alias lsk='ls -Sr'  #  sort by size, biggest last
+alias lsx='ls -XB'  #  sort by extension
+alias lst='ls -tr'  #  sort by date, most recent last
+alias lsc='ls -tcr' #  sort by/show change time, most recent last
+alias lsu='ls -tur' #  sort by/show access time, most recent last
+
+# long form versions of sorts
+alias ll='ls -lh'
+alias lk='lsk -lh'
+alias lx='lsx -lh'
+alias lt='lst -lh'
+alias lc='lsc -lh'
+alias lu='lsu -lh'
+
+# long form versions of sorts with nearly all files
+alias lla='ll -A'
+alias lka='lk -A'
+alias lxa='lx -A'
+alias lta='lt -A'
+alias lca='lc -A'
+alias lua='lu -A'
+
+# normal form versions of sorts with nearly all files
+alias lsla='lsl -A'
+alias lska='lsk -A'
+alias lsxa='lsx -A'
+alias lsta='lst -A'
+alias lsca='lsc -A'
+alias lsua='lsu -A'
+
+alias lr='ll -R' # recursive
+
+alias lsh='echo -e "
+ls   = simple form
+ll   = long form
+lr   = recursive
+
+lk   = sort by size, biggest last
+lx   = sort by extension
+lt   = sort by date, most recent last
+lc   = sort by/show change time, most recent last
+lu   = sort by/show access time, most recent last
+
+ls*  = simple form of sort (i.e. lsk, lsx, lst, lsc, lsu)
+l*a  = long form with nearly all files
+ls*a = simple form of sort with nearly all files
+"'

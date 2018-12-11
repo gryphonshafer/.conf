@@ -1,0 +1,359 @@
+" ----------------------------------------------------------------------------
+" Plugged Plugins
+" ----------------------------------------------------------------------------
+
+call plug#begin('~/.vim/plugged')
+    Plug 'vim-perl/vim-perl', { 'for': 'perl', 'do': 'make clean carp dancer highlight-all-pragmas moose test-more try-tiny' }
+    Plug 'junegunn/vim-peekaboo'
+        let g:peekaboo_window = 'vertical botright 30new'
+        let g:peekaboo_delay = 750
+    Plug 'junegunn/vim-easy-align'
+    Plug 'airblade/vim-gitgutter'
+    Plug 'myusuf3/numbers.vim'
+call plug#end()
+
+
+" ----------------------------------------------------------------------------
+" General
+" ----------------------------------------------------------------------------
+
+if has("syntax")
+    syntax on
+    colorscheme skywalker
+endif
+
+if has("folding")
+    let g:xml_syntax_folding=1
+    let perl_fold=1
+    set nofoldenable
+    set foldmethod=syntax
+endif
+
+if has("gui")
+    " set the gui options to:
+    "   g: grey inactive menu items
+    "   m: display menu bar
+    "   r: display scrollbar on right side of window
+    "   b: display scrollbar at bottom of window
+    "   t: enable tearoff menus on Win32
+    "   T: enable toolbar on Win32
+    set guioptions=agmrbtT
+    set notitle
+endif
+
+" set what characters display in list-mode
+set list
+set listchars=eol:$,tab:>-,trail:-,extends:+
+set nolist
+
+" taglist plugin settings (use :Tlist to activate)
+let Tlist_Inc_Winwidth=0
+let Tlist_Ctags_Cmd='~/.vim/doc/tags'
+
+" perl code may include pod
+let perl_include_pod=1
+
+" syntax color complex things like @{${"foo"}}
+let perl_extended_vars=1
+
+" perl folding options
+let perl_fold=1
+let perl_fold_blocks=1
+let perl_want_scope_in_variables=1
+
+" move over 'use Module;' line and hit 'gf' to edit module
+" also expand TMPLDIR/Module.pm to proper location
+set path+=/path/to/modules/**
+set suffixesadd=.pm,.pl
+set includeexpr=substitute(v:fname,'TMPLDIR','/path/to/tmpl/dir','')
+
+" type c-w f to open in a split a file whose name is under the cursor
+setlocal isfname+=:
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
+
+" ----------------------------------------------------------------------------
+" Settings
+" ----------------------------------------------------------------------------
+
+set tabstop=7        " numbers of spaces of tab character
+set softtabstop=4
+set smarttab
+set smartindent      " smart indenting
+set textwidth=0      " set the maximum text width (in this case, there's none)
+set shiftwidth=4     " number of spaces to (auto)indent
+set shiftround
+set expandtab        " expand tabs to spaces
+
+set autoindent       " automatically indent new lines correctly
+set cindent          " set C-style indenting on
+set cinkeys&
+set cinkeys-=0#
+set cinoptions&
+set cinoptions+=+2s,(1s,u0,m1
+set cinwords&
+set cinwords+=elsif,foreach,sub,unless,until
+
+set cmdheight=1      " height of commandline
+set history=50       " set commands/search patterns history
+set mat=5            " after finding matching brackets, blink for 50ms
+set report=0         " show all changes
+
+set maxfuncdepth=1000
+set dictionary=/usr/share/dict/words  " dictionary file for spelling
+set backspace=indent,eol,start        " set intelligent backspace settings
+
+set hlsearch         " turn on highlightling of search string
+set ignorecase       " ignore case when searching
+set incsearch        " highlight search pattern while you're typing it
+set wrapscan         " search across the end of the file
+set magic            " use extended regexp in search patterns
+
+set esckeys          " allow cursor keys while in insert mode
+
+set number           " number lines
+set nolist           " turn off extended character listing
+set nostartofline    " don't jump cursor around, stay in current column
+set nowrap           " don't wrap lines at the edge of the screen
+set mousehide        " hide the mouse when typing
+set nocompatible     " don't be VI-compatible
+set nojoinspaces     " don't insert two spaces after period when joining lines
+
+set title            " set the title to be the filename
+set ruler            " show ruler (line & column numbers)
+set showcmd          " display incomplete commands
+set showmatch        " show matching brackets
+set showmode         " show which mode we're in
+set vb               " visual bell instead of beeping
+set wildmenu         " turn on the extended menu for tab completion
+set wildchar=<TAB>   " character used for command line expansion
+set exrc             " read .exrc file in ~
+set nobackup         " don't keep a backup copy of the file
+set viminfo=         " don't create a viminfo file
+
+set statusline=%2.n\ %-40.40F\ \"%3.b\=%-2B\"\ %3.3c-%-3.3v\ [\ %l\ /\ %L\ ]\ %p%%\ %m
+set laststatus=2     " always show status line, even when editing just one file
+
+"set background = dark  " set a dark background
+
+
+" ----------------------------------------------------------------------------
+" Mappings
+" ----------------------------------------------------------------------------
+
+" function key mappings
+map <F2> :buffers<CR>:b
+nnoremap <F3> :NumbersToggle<CR> 
+map <F4> :bd<CR>
+map <F5> :w<CR>
+map <F6> :nohl<CR>
+map <F7> :set number!<CR>
+map <F8> :set wrap!<CR>
+map <F9> :set list!<CR>
+set pastetoggle=<F11>
+noremap <F12> <C-L>  " preserve functionality of <C-L> (screen refresh)
+
+" movement by arrow keys
+map <Esc>Oa <C-W><Up>
+map <Esc>Ob <C-W><Down>
+map <Esc>Oc <C-W><Right>
+map <Esc>Od <C-W><Left>
+map <Esc>[A <C-W><Up>
+map <Esc>[B <C-W><Down>
+map <Esc>[C <C-W><Right>
+map <Esc>[D <C-W><Left>
+
+" quick indenting
+map <TAB> :s/^/<TAB>/<CR> :noh<CR>
+map <S-TAB> :s/^<TAB>//<CR> :noh<CR>
+
+" make tab in v mode ident code
+vmap <tab> >gv
+vmap <s-tab> <gv
+
+" make tab in normal mode ident code
+nmap <tab> I<tab><esc>
+nmap <s-tab> ^i<bs><esc>
+
+" quick commenting-out
+map ## :s/^/#/<CR> :noh<CR>
+map !# :s/^#//<CR> :noh<CR>
+
+" comment blocks of code
+nmap @# :'a,.s/^/#/gi<cr>:nohl<cr>
+nmap !@# :'a,.s/^#//gi<cr>:nohl<cr>
+
+" display ascii value of character under cursor
+nmap \a :ascii<CR>
+
+" syntax-check Perl code
+map !! :!perl -Mstrict -wc %<CR>
+
+" auto-format Perl code
+map \f !Gperl -MText::Autoformat -e'autoformat'<CR>
+map \F !Gperl -MText::Autoformat -e'autoformat'
+
+" tidy selected lines (or entire file) with \pt
+nnoremap <silent> \pt :%!perltidy -q<Enter>
+vnoremap <silent> \pt :!perltidy -q<Enter>
+
+" look up perldoc function under cusor with \pdf
+nnoremap <buffer> <silent> \pdf :perldoc -f <cword><Enter>
+
+" look up docs for module under cusor with \pd
+nnoremap <buffer> <silent> \pd :perldoc <cword><Enter>
+
+" edits the perlmodule
+map \p :call Pmedit()<CR>
+
+" split edits the perlmodule
+map \P :call Pmsedit()<CR>
+
+" go into insert mode if we hit enter by accident
+map <cr> i
+
+
+" ----------------------------------------------------------------------------
+" Abbreviations
+" ----------------------------------------------------------------------------
+
+iab _table <table border="0" cellpadding="0" cellspacing="0">
+iab textplain print qq\|Content-Type: text/plain\n\n\|;
+iab texthtml print qq\|Content-Type: text/html\n\n\|;
+iab typeexcel print qq\|Content-Type: application/vnd.ms-excel\n\n\|;
+
+" insert abbreviations (this doesn't seem to work for me)
+iab _img <img src="">
+iab _href <a href="" alt=""></a>
+
+
+" ----------------------------------------------------------------------------
+" Auto-Commands
+" ----------------------------------------------------------------------------
+
+"use skeleton files for *.pm and *.pl files
+autocmd BufNewFile *.pm 0r ~/.vim/skeleton.pm|:$
+autocmd BufNewFile *.pl 0r ~/.vim/skeleton.pl|:$
+
+autocmd FileType perl :call MyPerlSettings()
+"autocmd BufRead *.pl,*.cgi !chmod +x %
+
+"use perl compiler for all *.pl and *.pm files.
+autocmd BufNewFile,BufRead *.p? compiler perl
+
+autocmd BufNewFile,BufRead *.p? compiler perl
+autocmd BufNewFile,BufRead *.p? map v :make<cr>
+"autocmd BufNewFile,BufRead *.p? so ~/perltest.vim
+
+"autocmd BufNewFile,BufRead *.t compiler perl
+"autocmd BufNewFile,BufRead *.t map v :make<cr>
+"autocmd BufNewFile,BufRead *.t so ~/perltest.vim
+
+" Every time you save a .pl or .pm file, it executes perl -c on that file
+"au BufWritePost *.pl,*.pm !perl -c %
+
+"perldoc.vim settings
+autocmd BufNewFile,BufRead *.p? setf perl
+autocmd BufNewFile,BufRead *.p? let g:perldoc_program='/usr/bin/perldoc'
+
+
+" ----------------------------------------------------------------------------
+" Functions
+" ----------------------------------------------------------------------------
+
+" Settings for editing perl source (plus bind the above two functions)
+function! MyPerlSettings()
+    if !did_filetype()
+        set filetype=perl
+    endif
+
+    set textwidth=78
+    set cindent
+    set comments=:#
+    set formatoptions=croql
+    set keywordprg=man\ -S\ 3
+
+    noremap <F10> <Esc>:call PerlCW()<CR><Esc>
+    noremap <F3> <Esc>:call PerlOutput()<CR><Esc>
+endfunction
+
+" perl -cw buffer, using a temp file, into a new window
+function! PerlCW()
+    let l:tmpfile1 = tempname()
+    let l:tmpfile2 = tempname()
+
+    execute "normal:w!" . l:tmpfile1 . "\<CR>"
+    "execute "normal:! perl -cw " . l:tmpfile1 . " \> " . l:tmpfile2 . " 2\>\&1 \<CR>"
+    execute "normal:! perl -cw " . l:tmpfile1 . " \> " . l:tmpfile2 . "\<CR>"
+    execute "normal:new\<CR>"
+    execute "normal:edit " . l:tmpfile2 . "\<CR>"
+endfunction
+
+" perl buffer, using a temp file, into a new window
+function! PerlOutput()
+    let l:tmpfile1 = tempname()
+    let l:tmpfile2 = tempname()
+
+    execute "normal:w!" . l:tmpfile1 . "\<CR>"
+    "execute "normal:! perl " . l:tmpfile1 . " \> " . l:tmpfile2 . " 2\>\&1 \<CR>"
+    execute "normal:! perl " . l:tmpfile1 . " \> " . l:tmpfile2 . "\<CR>"
+    execute "normal:new\<CR>"
+    execute "normal:edit " . l:tmpfile2 . "\<CR>"
+endfunction
+
+" returns the location of a perl module who's class
+" name the cursor is currently located in
+function! Pmlocate ()
+    let pmname = expand("<cWORD>")
+    let cmd = "/home/cmeyer/bin/pmlocate \"" . pmname ."\""
+    let location = system(cmd)
+    return location
+endfunction
+
+" edits the perlmodule
+function! Pmedit ()
+    let pmlocation = Pmlocate()
+    if pmlocation == ''
+        echo "could not locate the Perl module"
+    else
+        execute("e " . pmlocation)
+    endif
+endfunction
+
+" split edits the perlmodule
+function! Pmsedit ()
+    let pmlocation = Pmlocate()
+    if pmlocation == ''
+        echo "could not locate the Perl module"
+    else
+        execute("sp " . pmlocation)
+    endif
+endfunction
+
+" line number setting relative vs absolute
+function! NumberToggle()
+    if(&relativenumber == 1)
+        set number
+    else
+        set relativenumber
+    endif
+endfunc
+
+function! NumbersOff()
+    if(&relativenumber == 1)
+        set norelativenumber
+    elseif(&number == 1)
+        set nonumber
+    endif
+endfunc
+
+nnoremap <C-n> :call NumberToggle()<cr>
+nnoremap <C-m> :call NumbersOff()<cr>
+
+:au FocusLost * :set number
+:au FocusGained * :set relativenumber
+
+autocmd InsertEnter * :set number
+autocmd InsertLeave * :set relativenumber

@@ -1,0 +1,51 @@
+#!/bin/bash
+
+function github_clone {
+    pages=$( \
+        curl -sI https://api.github.com/users/gryphonshafer/repos | \
+        grep 'Link:' | \
+        perl -ae '/^.*page=(\d+)>;\srel="last".*$/; print $1' \
+    )
+
+    for page in $( seq 1 $pages )
+    do
+        for repo_url in $( \
+            curl -s https://api.github.com/users/gryphonshafer/repos?page=$page \
+                | grep git_url | perl -pe 's/^.*"\s*:\s*"|",//g' \
+        )
+        do
+            git clone $repo_url
+        done
+    done
+
+    for i in $( /bin/ls --color=never )
+    do
+        cd $i
+        git remote set-url origin git@github.com:gryphonshafer/$i.git
+        cd ..
+    done
+}
+
+function github_cpan {
+    for i in $( /bin/ls --color=never )
+    do
+        cd $i
+        if [ -f Makefile.PL ]
+        then
+            cpanm -n -f --with-develop --with-all-features --installdeps .
+            make realclean
+        fi
+        cd ..
+    done
+}
+
+function gio {
+    for hash in "$@"
+    do
+        printf "$hash -> "
+        git remote -v | head -1 \
+            | perl -ne '/@github.com:(.+?)(?:\.git)?\s/; print "https://github.com/$1/commit/"' \
+            | echo "url=$( cat - )$hash" \
+            | xargs curl -si https://git.io -F | grep 'Location:' | perl -pe 's/Location:\s+//'
+    done
+}

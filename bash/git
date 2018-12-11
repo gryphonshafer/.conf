@@ -1,0 +1,8 @@
+#!/bin/bash
+
+alias g="git"
+alias gg="git g"
+alias gp="git format-patch -1"
+alias ap="patch -p1 <"
+alias glx="git lx | column -nets '|' 2> /dev/null"
+alias grma="git ls-files --deleted -z | xargs -0 git rm"

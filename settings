@@ -1,0 +1,13 @@
+#!/bin/bash
+
+_conf="~/.conf"
+_conf_orig="~/.conf_orig"
+_conf_files=( \
+    bashrc bash_profile profile bash_logout \
+    gitconfig \
+    screenrc \
+    vim vimrc \
+    dzil perlcriticrc perltidyrc proverc perldb replyrc \
+    sqliterc
+)
+_ssh_files=( config all_keys )

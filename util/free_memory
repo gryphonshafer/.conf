@@ -1,0 +1,2 @@
+#!/bin/sh
+cat /proc/meminfo | grep MemFree | sed 's/[^0-9]//g' | perl -ne 'print int($_/1024*10)/10,"k\n"'

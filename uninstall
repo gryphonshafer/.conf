@@ -1,0 +1,29 @@
+#!/bin/bash
+
+. ~/.conf/settings
+
+for _file in "${_conf_files[@]}"
+do
+    if [[ -h "~/.${_file}" && -e "${_conf_orig}/${_file}" ]]
+    then
+        /bin/rm "~/.${_file}"
+        /bin/cp -rp "${_conf_orig}/${_file}" "~/.${_file}"
+        echo "Successfully uninstalled: ~/.${_file}"
+    else
+        echo "Not previously installed: ~/.${_file}"
+    fi
+done
+
+for _file in "${_ssh_files[@]}"
+do
+    if [[ -h "~/.ssh/${_file}" && -e "${_conf_orig}/ssh_${_file}" ]]
+    then
+        /bin/rm "~/.ssh/${_file}"
+        /bin/cp -rp "${_conf_orig}/ssh_${_file}" "~/.ssh/${_file}"
+        echo "Successfully uninstalled: ~/.ssh/${_file}"
+    else
+        echo "Not previously installed: ~/.ssh/${_file}"
+    fi
+done
+
+/bin/rmdir $_conf_orig

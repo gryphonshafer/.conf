@@ -1,0 +1,88 @@
+# example on how to change screen escape key
+#escape ^Tt
+
+bind ' ' windowlist -b
+bind ^c eval "stuff 'se\n'" screen
+
+# reload screenrc with Cntl-A Shift-R
+bind R eval "source $HOME/.screenrc" "echo '.screenrc reloaded'"
+
+# example on how to set a reattach password
+#password ODSJQf.4IJN7E # "1234"
+
+# don't display startup message
+startup_message off
+
+# switch-on audible bell
+vbell off
+
+# enable alternate screen support (for virtual terminals)
+altscreen on
+
+backtick 1 10 10 $HOME/bin/free_memory
+
+# status and caption lines
+hardstatus alwayslastline '%{= .G}[ %{g}%H %{r}%l %{B}%1` %{G}][%=%{c}%S: %{w}%?%-Lw%?%?%E%{R}{%{-}%:%{r}(%{-}%?%{Y}%n*%f %t%? %{g}%u%{-}%?%{-}%?%E%{R}}%{-}%:%{r})%{-}%?%?%+Lw%? %=%{G}][ %{m}%D %{B}%M %d %{g}%C:%s %A %{G}]'
+bind Y hardstatus alwayslastline '%{= .G}[ %{g}%H %{r}%l %{B}%1` %{G}][%=%{c}%S: %{w}%?%-Lw%?%?%E%{R}{%{-}%:%{r}(%{-}%?%{Y}%n*%f %t%? %{g}%u%{-}%?%{-}%?%E%{R}}%{-}%:%{r})%{-}%?%?%+Lw%? %=%{G}][ %{m}%D %{B}%M %d %{g}%C:%s %A %{G}]'
+bind y hardstatus alwayslastline '%{= .G}[ %{g}%H %{G}][%=%{w}%?%-Lw%?%?%E%{R}{%{-}%:%{r}(%{-}%?%{Y}%n*%f %t%? %{g}%u%{-}%?%{-}%?%E%{R}}%{-}%:%{r})%{-}%?%?%+Lw%? %=%{G}][ %{m}%D %{B}%M %d %{g}%c %{G}]'
+bind u hardstatus alwayslastline '%{= .G}[%{g}%H%{G}]%=%{w}%?%-Lw%?%{Y}%n*%f %t%? %{g}%u%{-}%?%{-}%?%+Lw%? %=%{G}[%{B}%m/%d %{g}%c%{G}]'
+bind U hardstatus ignore
+caption splitonly '%{= .G}%?%F%{bG}%:%{KG}%? %= %?%F%{Y}%:%{w}%? %n*%f %t%? %{g}%u%{-}%?%{-} %='
+
+# detach on hangup
+autodetach on
+
+# emulate .logout message
+pow_detach_msg "Screen session of \$LOGNAME \$:cr:\$:nl:ended."
+
+# allow bold colors
+attrcolor b ".I"
+
+# set every new windows hardstatus line to somenthing descriptive
+defhstatus "screen: ^En (^Et)"
+
+# use a larger scollback buffer
+defscrollback 10000
+
+# remove some stupid / dangerous key bindings
+bind k
+bind ^k
+bind .
+bind ^\
+bind \\
+
+# make bindings better
+bind K kill
+bind '}' history
+
+# split screen controls
+bind s split
+bind S split
+bind ^s split
+bind ^S split
+bind \ split -v
+bind ^\ split -v
+bind x remove
+bind o focus
+bind m monitor
+
+# resize split screen
+bind = resize =
+bind _ resize max
+bind + resize +1
+bind - resize -1
+bind o resize +1
+bind p resize -1
+bind ^o resize +10
+bind ^p resize -10
+
+# make the shell in every window a login shell
+#shell -$SHELL
+
+# default window setup
+#screen -t main 0
+#screen -t connection 1 ssh hostname
+#select 0
+
+# erase background with current background
+defbce "on"

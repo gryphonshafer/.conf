@@ -1,0 +1,17 @@
+#!/bin/bash
+
+alias sdate="sudo ntpdate pool.ntp.org"
+alias stime="sudo ntpdate pool.ntp.org"
+
+alias myip="curl http://ipecho.net/plain; echo"
+alias myips="ifconfig | egrep 'addr:[0-9]+' | sed 's/^[ \t]*//' | cut -d' ' -f2 | sed 's/addr://'"
+alias ifc="ifconfig | perl -0ne 'while ( /(?:^|\n)(\w+).*?Link.*?inet\saddr:(\S+)/gs ) { printf qq/%8s => %s\n/, \$1, \$2 }'"
+
+function ifr {
+    for nic in "$@"
+    do
+        echo "Refreshing $nic..."
+        sudo ifdown $nic
+        sudo ifup $nic
+    done
+}

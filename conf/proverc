@@ -1,0 +1,6 @@
+-r # recursive
+-l # add lib
+-f # show failures
+--state=hot,fresh,fast,save
+-j4
+--timer

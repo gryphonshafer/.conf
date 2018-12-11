@@ -1,0 +1,80 @@
+#!/bin/bash
+
+alias x=exit
+alias h='history'
+alias hg='history | grep'
+alias less="less -R"
+alias wcl='wc --lines'
+alias rebash="source ~/.bashrc"
+alias hed='head -n $(( $(tput lines) - 2 ))'
+alias tal='tail -n $(( $(tput lines) - 2 ))'
+
+alias rm='rm -f'
+alias rd='rm -rf'
+alias mkdir='mkdir -p'
+alias md='mkdir'
+alias dirs="dirs -v"
+
+alias tree='tree -Csuh'
+alias grep='grep --color=auto --exclude-dir=\.svn --exclude-dir=\.git'
+alias fgrep='fgrep --color=auto --exclude-dir=\.svn --exclude-dir=\.git'
+alias egrep='egrep --color=auto --exclude-dir=\.svn --exclude-dir=\.git'
+alias ackq="ack -Q"
+
+alias vi='vim -u ~/.vimrc'
+alias vim='vim -u ~/.vimrc'
+
+alias df='df -h'
+alias du='du -h'
+alias free="free -mt"
+
+alias matrix='tr -c "[:digit:]" " " < /dev/urandom | dd cbs=$COLUMNS conv=unblock | GREP_COLOR="1;32" grep --color "[^ ]"'
+alias epoch="date +%s"
+
+function calc {
+    awk "BEGIN { print $* }";
+}
+
+# "cd ..." moves up two directories; "cd ...." moves up three directories
+function cd {
+    local option= length= count= cdpath= i=
+
+    if [ "$1" = "-P" -o "$1" = "-L" ]
+    then
+        option="$1"
+        shift
+    fi
+
+    if [ -n "$1" -a "${1:0:3}" = '...' -a "$1" = "${1%/*}" ]
+    then
+        length=${#1}
+        count=2
+
+        for ((i=$count;i<=$length;i++))
+        do
+            cdpath="${cdpath}../"
+        done
+
+        builtin cd $option "$cdpath"
+    elif [ -n "$1" ]
+    then
+        builtin cd $option "$*"
+    else
+        builtin cd $option
+    fi
+}
+
+function mcd {
+    mkdir -p "$1"
+    builtin cd "$1"
+    builtin pwd
+}
+
+function mf {
+    echo -e "\n\n" > $1
+}
+
+function mx {
+    mf $1
+    chmod a+x $1
+}

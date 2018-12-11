@@ -1,0 +1,84 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+use Cwd;
+use File::Find;
+
+my $changefrom;
+while ($changefrom eq '') {
+    print "Change (Pattern): ";
+    $changefrom = <>;
+    chomp($changefrom);
+}
+
+print "To... (Pattern): ";
+my $changeto = <>;
+chomp($changeto);
+
+print "Match files [.]: ";
+my $match_files = <>;
+chomp($match_files);
+$match_files = '.' if ($match_files eq '');
+
+my $cwd = cwd();
+print "Directory [$cwd]: ";
+my $startdir = <>;
+chomp($startdir);
+$startdir = $cwd if ($startdir eq '');
+
+print "Case Sens (y/n) [n]: ";
+my $case = <>;
+chomp($case);
+
+my $change_files_count = 0;
+my $change_times_count = 0;
+print "Starting search & changes...\n";
+&find(\&wanted, $cwd);
+
+if ($change_files_count == 0) {
+    print "Done! Didn't find any files to change.\n";
+} else {
+    print "Done! Made $change_times_count changes ",
+        "in $change_files_count files.\n";
+}
+
+if (($^O =~ /MS/i) && ($^O =~ /Win/i)) {
+    print "\nPress return to exit. ";
+    my $ending = <>;
+}
+
+exit;
+
+sub wanted {
+    if ((-f) && ($_ =~ /$match_files/)) {
+        open(DEFILE, $_) || print "Can't open file: $!\n";
+        my @file_contents = <DEFILE>;
+        close(DEFILE);
+
+        my $happens;
+        if (($case eq "y") || ($case eq "Y")) {
+            $happens = grep(/$changefrom/, @file_contents);
+        } else {
+            $happens = grep(/$changefrom/i, @file_contents);
+        }
+
+        if ($happens > 0) {
+            print "Changing \"$File::Find::name\" file...\n";
+            my $file_contents = join('', @file_contents);
+
+            if (($case eq "y") || ($case eq "Y")) {
+                $file_contents =~ s/$changefrom/$changeto/g;
+            } else {
+                $file_contents =~ s/$changefrom/$changeto/gi;
+            }
+
+            open(DAFILE, "> $_") || print "Can't write to file: $!\n";
+            print DAFILE $file_contents;
+            close(DAFILE);
+
+            $change_times_count += $happens;
+            $change_files_count++;
+        }
+    }
+}

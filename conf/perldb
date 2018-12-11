@@ -1,0 +1,12 @@
+$DB::alias{d} = 's/d/DB::d/';
+sub d {
+    require Data::Printer;
+    Data::Printer->import( colored => 1 );
+
+    my $data = ( @_ > 1 ) ? [@_] : $_[0];
+    Data::Printer::p( ( ref $data ) ? $data : \$data );
+}
+
+sub DB::afterinit {
+    push @DB::typeahead => '{{v' unless ( $DB::already_curly_curly_v++ );
+}

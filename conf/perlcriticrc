@@ -1,0 +1,87 @@
+# highest severity level
+severity = 1
+
+# report level of error, location, severity, etc.
+verbose = [%p] %m at %f line %l, near '%r'\n
+
+# don't require tidy code
+[-CodeLayout::RequireTidyCode]
+
+# ignore builders (allows passage if using Moose)
+[Subroutines::ProhibitUnusedPrivateSubroutines]
+private_name_regex = _(?!build)\w+
+
+# the literal '' or "" in a proper monospaced font is not difficult to read
+[-ValuesAndExpressions::ProhibitEmptyQuotes]
+[-ValuesAndExpressions::ProhibitNoisyQuotes]
+
+# mix of low and high-precedence operators OK
+[-ValuesAndExpressions::ProhibitMixedBooleanOperators]
+
+# no requirement to have /xms in a regex
+[-RegularExpressions::RequireDotMatchAnything]
+[-RegularExpressions::RequireLineBoundaryMatching]
+[-RegularExpressions::RequireExtendedFormatting]
+
+# using escaped meta-chars is OK
+[-RegularExpressions::ProhibitEscapedMetacharacters]
+
+[-RegularExpressions::ProhibitUnusedCapture]
+
+[-Documentation::RequirePodAtEnd]
+[-Documentation::RequirePodSections]
+[-ErrorHandling::RequireCarping]
+[-ValuesAndExpressions::ProhibitCommaSeparatedStatements]
+[-Variables::ProhibitPunctuationVars]
+
+# accessors that look at @_ before doing things are OK
+[-Subroutines::RequireArgUnpacking]
+
+# double-sigil dereferences are usually OK
+[-References::ProhibitDoubleSigils]
+
+# unless blocks are OK
+[-ControlStructures::ProhibitUnlessBlocks]
+
+# code review to decide whether range comparisons in an unless block are fine
+[-ControlStructures::ProhibitNegativeExpressionsInUnlessAndUntilConditions]
+
+# postfix if OK
+[-ControlStructures::ProhibitPostfixControls]
+
+# global variables can sometimes be necessary
+[-Variables::ProhibitPackageVars]
+
+# reusing names in different scopes is OK (warnings will warn if in same scope)
+[-Variables::ProhibitReusedNames]
+
+# using parentheses for builtins is OK
+[-CodeLayout::ProhibitParensWithBuiltins]
+
+# reverse sort block is OK
+[-BuiltinFunctions::ProhibitReverseSortBlock]
+
+# overridden by the better rule RequireCheckedSyscalls
+[-InputOutput::RequireCheckedClose]
+
+# subroutine prototypes are OK
+[-Subroutines::ProhibitSubroutinePrototypes]
+
+# "$foo = $1 if /.../" is OK
+[-RegularExpressions::ProhibitCaptureWithoutTest]
+
+# conditional declarations are OK
+[-Variables::ProhibitConditionalDeclarations]
+
+# allow computed use statements
+[BuiltinFunctions::ProhibitStringyEval]
+allow_includes = 1
+
+# complex map statements are OK
+[-BuiltinFunctions::ProhibitComplexMappings]
+
+# POD links don't need text
+[-Documentation::RequirePodLinksIncludeText]
+
+# "int( rand(100) )" is OK
+[-ValuesAndExpressions::ProhibitMagicNumbers]

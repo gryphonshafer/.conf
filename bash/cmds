@@ -1,0 +1,115 @@
+#!/bin/bash
+
+function cmds {
+    _OPT_a=0
+    _OPT_f=0
+    _OPT_A=0
+    _OPT_l=0
+    _OPT_d=0
+    _OPT_h=0
+
+    local OPTIND
+
+    while getopts ":afAldh" OPS
+    do
+        case "${OPS}" in
+            a)
+                _OPT_a=1
+                ;;
+            f)
+                _OPT_f=1
+                ;;
+            A)
+                _OPT_A=1
+                ;;
+            l)
+                _OPT_l=1
+                ;;
+            d)
+                _OPT_d=1
+                ;;
+            h)
+                _OPT_h=1
+                ;;
+            \?)
+                echo "Invalid option: -$OPTARG" >&2
+                _OPT_h=1
+                ;;
+            :)
+                echo "Option -$OPTARG requires an argument." >&2
+                _OPT_h=1
+                ;;
+        esac
+    done
+
+    shift $((OPTIND-1))
+
+    if [ $_OPT_h == 1 ]
+    then
+        cat << EOF
+
+Usage: cmds [switches] [arguments]
+
+    -d    describe the command
+    -a    list aliases only
+    -f    list functions only
+    -A    include "hidden" commands (those preceded by "_")
+    -l    return as list (instead of in columns)
+    -h    help/usage message
+
+EOF
+        return
+    fi
+
+    declare -a _CMDS
+    declare -a _ALIAS
+    declare -a _FUNCS
+
+    IFS=$'\n'
+
+    if [[ $_OPT_a == 1 && $_OPT_f == 1 ]]
+    then
+        _ALIAS=( $( alias | egrep '^alias' | sed -e 's/=.*//' | sed -e 's/^alias //' ) )
+        _FUNCS=( $( declare -F | sed -e 's/^declare -f //' ) )
+        _CMDS=( "${_ALIAS[@]}" "${_FUNCS[@]}" )
+    elif [ $_OPT_a == 1 ]
+    then
+        _CMDS=( $( alias | egrep '^alias' | sed -e 's/=.*//' | sed -e 's/^alias //' ) )
+    elif [ $_OPT_f == 1 ]
+    then
+        _CMDS=( $( declare -F | sed -e 's/^declare -f //' ) )
+    else
+        _ALIAS=( $( alias | egrep '^alias' | sed -e 's/=.*//' | sed -e 's/^alias //' ) )
+        _FUNCS=( $( declare -F | sed -e 's/^declare -f //' ) )
+        _CMDS=( "${_ALIAS[@]}" "${_FUNCS[@]}" )
+    fi
+
+    unset IFS
+
+    if [ $_OPT_A == 0 ]
+    then
+        _CMDS=( $( IFS=$'\n'; echo "${_CMDS[*]}" | grep -v '^_' ) )
+    fi
+
+    if [ "$@" ]
+    then
+        _CMDS=( $( IFS=$'\n'; echo "${_CMDS[*]}" | grep "$@" ) )
+    fi
+
+    if [ $_OPT_d == 1 ]
+    then
+        for _CMD in "${_CMDS[@]}"
+        do
+            alias $_CMD 2> /dev/null
+            declare -f $_CMD
+        done
+        return
+    fi
+
+    if [ $_OPT_l == 0 ]
+    then
+        printf '%s\n' "${_CMDS[@]}" | sort | column
+    else
+        printf '%s\n' "${_CMDS[@]}" | sort
+    fi
+}

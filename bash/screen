@@ -1,0 +1,14 @@
+#!/bin/bash
+
+alias screen="TERM=screen screen"
+alias sc="screen -aAxRR"
+alias sc-R="screen -aAxRR"
+alias sc-c="screen -aAS"
+alias sc-r="screen -aAxr"
+alias sc-l="screen -ls"
+alias sc-cd="screen -X chdir"
+alias sc-f="sudo /etc/init.d/screen-cleanup start"
+
+alias se="set >~/.env"
+alias re=". ~/.env 2> /dev/null && rm ~/.env"
+alias keep="while [ 1 ]; do echo -n '.'; sleep 2; echo -n '_'; sleep 2; done"

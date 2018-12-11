@@ -1,0 +1,24 @@
+Host ufda
+    HostName gryphonshafer.com
+    Port 4222
+
+Host uber
+    HostName mail.gryphonshafer.com
+    Port 4222
+
+Host ggssh
+    User link
+    HostName goldenguru.com
+    Port 5822
+    RemoteForward 5831 localhost:22
+
+Host vmssh
+    HostName goldenguru.com
+    Port 4222
+    RemoteForward 4231 localhost:22
+    ServerAliveInterval 60
+    TCPKeepAlive yes
+
+Host titanic
+    HostName localhost
+    Port 4231

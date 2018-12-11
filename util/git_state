@@ -1,0 +1,84 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+sub run {
+    my $c = join( '; ', @_ );
+    return map { chomp; $_ } `$c`;
+}
+
+( my $git_version = ( run('git --version') )[0] ) =~ s/\s*git\s+version\s+//;
+my @git_version = reverse split( /\./, $git_version );
+my $git_unified_version = 0;
+for ( my $i = 0; $i < @git_version; $i++ ) {
+    $git_version[$i] = 0 unless ( $git_version[$i] and $git_version[$i] =~ /^\d+$/ );
+    $git_unified_version += $git_version[$i] * 10 ** ( $i * 3 );
+}
+
+my ( $_git_branch, $_git_stash_count, @_git_status ) = run(
+    q{git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\ \1/' -e 's/ $//g' -e 's/^ //g'},
+    ( ( $git_unified_version > 1007005 ) ? 'git rev-list --count -g refs/stash 2> /dev/null || echo 0' : 'echo 0' ),
+    'git status -s',
+);
+
+my ( $_git_staged, $_git_modified, $_git_untracked ) = ( 0, 0, 0 );
+
+for (@_git_status) {
+    if ( /^\w/ ) {
+        $_git_staged++;
+    }
+    elsif ( /^\s/ ) {
+        $_git_modified++;
+    }
+    elsif ( /^\?/ ) {
+        $_git_untracked++;
+    }
+}
+
+my ( $_git_ahead, $_git_behind, $_git_ab, $_git_remote ) = ( 0, 0, '', '' );
+($_git_remote) = run("git config branch.$_git_branch.remote")
+    if ( $_git_branch and $_git_branch ne '.' and substr( $_git_branch, 0, 1 ) ne '(' );
+$_git_remote ||= '';
+
+if ( length($_git_remote) > 0 and $_git_remote ne '.' and substr( $_git_branch, 0, 1 ) ne '(' ) {
+    ( $_git_behind, $_git_ahead ) = split(
+        /\s+/,
+        ( run("git rev-list --left-right --count remotes/$_git_remote/$_git_branch...HEAD 2> /dev/null") )[0] || '',
+    ) if ( $git_unified_version > 1007005 );
+
+    $_git_behind //= 0;
+    $_git_ahead  //= 0;
+
+    if ( $_git_behind > 0 or $_git_ahead > 0 ) {
+        my $_git_ahead_f  = ( $_git_ahead  > 0 ) ? '+' . $_git_ahead  : '';
+        my $_git_behind_f = ( $_git_behind > 0 ) ? '-' . $_git_behind : '';
+
+        $_git_ab = join( '',
+            '(', $_git_ahead_f,
+            ( ( $_git_behind > 0 and $_git_ahead > 0 ) ? ',' : '' ),
+            $_git_behind_f, ')',
+        );
+    }
+}
+
+my $_git_smu = ( $_git_staged > 0 or $_git_modified > 0 or $_git_untracked > 0 )
+    ? "$_git_staged.$_git_modified.$_git_untracked"
+    : '';
+
+my $_git_stash = (
+    $_git_stash_count and $_git_stash_count =~ /^\d+$/ and
+    $_git_stash_count > 0
+) ? "{$_git_stash_count}" : '';
+
+my $_git_join  = ( length($_git_ab) > 0 or length($_git_smu) > 0 or length($_git_stash) > 0 ) ? ':' : '';
+
+$_git_branch ||= '(none)';
+
+open( my $out, '>', $ENV{'HOME'} . '/.git_state' ) or die $!;
+print $out join( "\n",
+    "_git_join='$_git_join'",
+    "_git_ab='${_git_ab}'",
+    "_git_smu='${_git_smu}'",
+    "_git_stash='${_git_stash}'",
+    "_git_branch='${_git_branch}'",
+), "\n";

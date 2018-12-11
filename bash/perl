@@ -1,0 +1,66 @@
+#!/bin/bash
+
+alias t2s="perl -p -i -e 's/\t/    /g'"
+alias perlmods="perl -MExtUtils::Installed -E 'say for ExtUtils::Installed->new->modules'"
+alias perlmods_date="perldoc -t perllocal | awk '{ if (/Module/) print \$7}' "
+
+alias pb="perlbrew"
+alias d="dest"
+
+alias cpan="cpanm -n -f"
+alias cpanid="cpanm -n -f --installdeps ."
+alias cpanidd="cpanm -n -f --with-develop --installdeps ."
+alias cpanida="cpanm -n -f --with-develop --with-all-features --installdeps ."
+
+alias pc="cover -delete; HARNESS_PERL_SWITCHES=-MDevel::Cover prove t; cover"
+
+alias r="reply"
+alias repl="reply"
+
+function cpanf {
+    if [ "$1" == '-l' ]
+    then
+        \grep "^\s*feature '.*sub" ~/bin/cpanfile | perl -F"/'([^']+)'/" -ae "printf qq{%-10s %s\n}, @F[1,3]"
+    elif [ "$1" == '-f' ]
+    then
+        cat ~/bin/cpanfile
+    elif [ "$1" == '-i' ]
+    then
+        for feature in $*
+        do
+            if [ "$feature" == '-i' ]
+            then
+                continue
+            fi
+            cpanm -n -f --installdeps ~/bin --with-feature=$feature
+        done
+    elif [ "$1" == '-a' ]
+    then
+        for feature in $( cpanf -l | cut -d' ' -f1 )
+        do
+            cpanf -i $feature
+        done
+    else
+        cat << EOF
+
+Usage: cpanf [switch] [arguments]
+
+    -l    list cpanfile feature names
+    -f    cpanfile contents in full
+    -i    install one or more features ("cpanf -i dev test cover")
+    -a    install all features
+    -h    help (this)
+
+EOF
+    fi
+}
+
+function pblibcp {
+    perl -MExtUtils::Installed -E 'say for ExtUtils::Installed->new->modules' > /tmp/pblibcp_$$
+
+    perlbrew lib create $1
+    perlbrew use @$1
+
+    cat /tmp/pblibcp_$$ | cpanm --interactive -n -f
+    rm /tmp/pblibcp_$$
+}

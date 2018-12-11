@@ -1,0 +1,11 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use LWP::UserAgent;
+use HTTP::Request::Common;
+
+my $link = shift;
+my $ua   = LWP::UserAgent->new();
+my $req  = HTTP::Request->new( 'HEAD' => $link );
+
+print $ua->request($req)->as_string();

@@ -1,0 +1,36 @@
+[DataPrinter]
+[Hints]
+[Interrupt]
+[LexicalPersistence]
+[LoadClass]
+[Packages]
+[Pager]
+[ReadLine]
+
+[Autocomplete::Commands]
+[Autocomplete::Functions]
+[Autocomplete::Globals]
+[Autocomplete::Keywords]
+[Autocomplete::Lexicals]
+[Autocomplete::Methods]
+[Autocomplete::Packages]
+
+[AutoRefresh]
+track_require = 1
+
+[Colors]
+error   = bright_red
+warning = yellow
+result  = green
+
+[Editor]
+editor = vi
+
+[ResultCache]
+variable = r
+
+[Timer]
+mintime = 0.01
+
+[ConfigurablePrompt]
+prompt="r<$history_count> "

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Intent: Wrapper to limit exit values from Perl tests to allow git bisect to work
+# Usage:
+#     git bisect start HEAD 1234567
+#     git bisect run exit_wrap t/test.t
+#     git bisect reset
+
+$*
+rv=$?
+
+if [ $rv -gt 127 ]
+then
+    exit 127
+else
+    exit $rv
+fi

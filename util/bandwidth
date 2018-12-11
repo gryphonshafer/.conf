@@ -1,0 +1,75 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+use constant {
+    INTERFACE => $ARGV[0] || 'eth0',
+    HISTORY   => $ARGV[1] || 3,
+    POLLING   => $ARGV[2] || 1,
+    MAX_DOWN  => 168, # 187.5,
+    MAX_UP    => 96,  # 96,
+};
+
+my @history = [ map { $_->{'bytes'} } interface_activity(INTERFACE) ];
+sleep POLLING;
+while (1) {
+    push( @history, [ map { $_->{'bytes'} } interface_activity(INTERFACE) ] );
+    shift @history if ( @history > HISTORY );
+
+    my ( $receive_last, $transmit_last, @receive, @transmit );
+    foreach (@history) {
+        if ( $receive_last and $transmit_last ) {
+            push( @receive,  $_->[0] - $receive_last );
+            push( @transmit, $_->[1] - $transmit_last );
+        }
+        ( $receive_last, $transmit_last ) = @{$_};
+    }
+
+    my $receive;
+    $receive += $_ foreach (@receive);
+    $receive /= @receive;
+
+    my $transmit;
+    $transmit += $_ foreach (@transmit);
+    $transmit /= @transmit;
+
+    printf "%02d:%02d:%02d | D: %5.1fk / %5.1fk = %5.1f%% | U: %4.1fk / %2dk = %5.1f%% | %5.1fk\n",
+        ( localtime() )[ 2, 1, 0 ],
+        $receive / 1024,
+        MAX_DOWN,
+        $receive / 1024 / MAX_DOWN * 100,
+        $transmit / 1024,
+        MAX_UP,
+        $transmit / 1024 / MAX_UP * 100,
+        ( $receive + $transmit ) / 1024;
+    sleep POLLING;
+}
+
+sub interface_activity {
+    my ($interface) = @_;
+    my ( %receive, %transmit );
+    (
+        @receive{  qw( bytes packets errors drop fifo frame compressed multicast ) },
+        @transmit{ qw( bytes packets errors drop fifo frame compressed multicast ) },
+    ) = `grep $interface /proc/net/dev` =~ /
+        ^\s*\S+:
+        (\d+)    #  1. bytes (receive)
+        \D+(\d+) #  2. packets (receive)
+        \D+(\d+) #  3. errors (receive)
+        \D+(\d+) #  4. drop (receive)
+        \D+(\d+) #  5. fifo (receive)
+        \D+(\d+) #  6. frame (receive)
+        \D+(\d+) #  7. compressed (receive)
+        \D+(\d+) #  8. multicast (receive)
+        \D+(\d+) #  9. bytes (transmit)
+        \D+(\d+) # 10. packets (transmit)
+        \D+(\d+) # 11. errors (transmit)
+        \D+(\d+) # 12. drop (transmit)
+        \D+(\d+) # 13. fifo (transmit)
+        \D+(\d+) # 14. frame (transmit)
+        \D+(\d+) # 15. compressed (transmit)
+        \D+(\d+) # 16. multicast (transmit)
+    /x;
+
+    return ( \%receive, \%transmit );
+}

@@ -1,0 +1,103 @@
+#!/bin/bash
+
+function history_cmd {
+    history -a # immediately append history to file
+#    history -c # clear the current history in our session
+#    history -r # read the history file into our session
+}
+
+function title {
+    if [[ ${#*} -gt 0 ]]
+    then
+        export TITLE=$*
+    else
+        if [[ ${#TITLE} -eq 0 ]]
+        then
+            export TITLE=$HOSTNAME
+        fi
+    fi
+
+    export PROMPT_COMMAND='history_cmd; echo -ne "\033]0;$TITLE\007"'
+}
+
+alias notitle="export PROMPT_COMMAND='history_cmd'"
+
+#-----------------------------------------------------------------------------
+
+if [ ${USER} == 'root' ]
+then
+    _dash='='
+else
+    _dash='-'
+fi
+
+function _ps_pwd {
+    _pwd=`pwd`
+    _pwd=${_pwd/~/'~'}
+
+    if [[ ${#_pwd} -gt 25 ]]
+    then
+        IFS=$'/'
+        _path_array=( $_pwd )
+        IFS=$oIFS
+
+        if [[ ${#_path_array[@]} -gt 3 ]]
+        then
+            _path_array=( ${_path_array[@]:0:2} '*' ${_path_array[@]:${#_path_array[@]}-2:2} )
+        else
+            _path_array=( "${_pwd:0:15}*" `basename ${_pwd}` )
+        fi
+
+        IFS='/'
+        echo "${_path_array[*]}"
+        IFS=$oIFS
+    else
+        echo $_pwd
+    fi
+}
+
+#-----------------------------------------------------------------------------
+
+function _git_state_init {
+    if [ $( ps | grep git_state | wc -l ) -eq 0 ]
+    then
+        echo "+"
+        /usr/bin/nohup /bin/bash -c 'eval "git_state" &' > /dev/null 2> /dev/null
+    else
+        echo "-"
+    fi
+}
+
+alias _git_top="git rev-parse --show-toplevel 2> /dev/null"
+
+function _git_state_read {
+    source ~/.git_state 2> /dev/null
+}
+
+#-----------------------------------------------------------------------------
+
+function prm {
+    case $* in
+        c)
+            export PS1='\u@\h:(`_ps_pwd`){\!:\j}${_dash}> '
+            ;;
+        0)
+            export PS1='\[\033[1;34m\]\u\[\033[0;37m\]@\[\033[0;32m\]\h\[\033[0;37m\]:(\[\033[0;31m\]`_ps_pwd`\[\033[0;37m\]){\[\033[0;36m\]\!:\j\[\033[0;37m\]}\[\033[0;37m\]${_dash}>\[\033[0m\] '
+            ;;
+        1)
+            export PS1='\[\033[1;34m\]\u\[\033[0;37m\]@\[\033[0;32m\]\h\[\033[0;37m\]:(\[\033[0;31m\]`_ps_pwd`\[\033[0;37m\]){\[\033[0;36m\]\!:\j\[\033[0;37m\]}$( if [ "$(_git_top)" ]; then `git_state`; _git_state_read; echo -e "\[\033[0;37m\][\[\033[0;32m\]$_git_branch\[\033[0;37m\]$_git_join\[\033[0;33m\]$_git_ab\[\033[0;36m\]$_git_smu\[\033[0;33m\]$_git_stash\[\033[0;37m\]]"; fi )\[\033[0;37m\]${_dash}>\[\033[0m\] '
+            ;;
+        2)
+            export PS1='$( if [ "$(_git_top)" ]; then `git_state`; _git_state_read; echo -e "\[\033[0;37m\][\[\033[0;32m\]$_git_branch\[\033[0;37m\]$_git_join\[\033[0;33m\]$_git_ab\[\033[0;36m\]$_git_smu\[\033[0;33m\]$_git_stash\[\033[0;37m\]]"; echo "\n"; fi )\[\033[1;34m\]\u\[\033[0;37m\]@\[\033[0;32m\]\h\[\033[0;37m\]:(\[\033[0;31m\]`_ps_pwd`\[\033[0;37m\]){\[\033[0;36m\]\!:\j\[\033[0;37m\]}\[\033[0;37m\]${_dash}>\[\033[0m\] '
+            ;;
+        d1)
+            export PS1='\[\033[1;34m\]\u\[\033[0;37m\]@\[\033[0;32m\]\h\[\033[0;37m\]:(\[\033[0;31m\]`_ps_pwd`\[\033[0;37m\]){\[\033[0;36m\]\!:\j\[\033[0;37m\]}$( if [ "$(_git_top)" ]; then _git_state_read; echo -e "\[\033[0;37m\][\[\033[0;32m\]$_git_branch\[\033[0;37m\]$_git_join\[\033[0;33m\]$_git_ab\[\033[0;36m\]$_git_smu\[\033[0;33m\]$_git_stash\[\033[0;37m\]$(git_state_init)]"; fi )\[\033[0;37m\]${_dash}>\[\033[0m\] '
+            ;;
+        d2)
+            export PS1='$( if [ "$(_git_top)" ]; then _git_state_read; echo -e "\[\033[0;37m\][\[\033[0;32m\]$_git_branch\[\033[0;37m\]$_git_join\[\033[0;33m\]$_git_ab\[\033[0;36m\]$_git_smu\[\033[0;33m\]$_git_stash\[\033[0;37m\]$(git_state_init)]"; echo "\n"; fi )\[\033[1;34m\]\u\[\033[0;37m\]@\[\033[0;32m\]\h\[\033[0;37m\]:(\[\033[0;31m\]`_ps_pwd`\[\033[0;37m\]){\[\033[0;36m\]\!:\j\[\033[0;37m\]}\[\033[0;37m\]${_dash}>\[\033[0m\] '
+            ;;
+        *)
+            echo 'Usage: prm [c|0|1|2|d1|d2]'
+            ;;
+    esac
+}

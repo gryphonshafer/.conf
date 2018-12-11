@@ -1,0 +1,15 @@
+[ -d "${HOME}/bin" ] && PATH="${HOME}/bin:${PATH}"
+[ -d "${HOME}/man" ] && MANPATH="${HOME}/man:${MANPATH}"
+[ -d "${HOME}/info" ] && INFOPATH="${HOME}/info:${INFOPATH}"
+
+export PATH="$PATH:/usr/{local/bin,local/sbin}:/sbin"
+
+# set umask; if user and group match and our uid > 99, set different umask
+if [ "`id -gn`" = "`id -un`" -a `id -u` -gt 99 ]; then
+    umask 002
+else
+    umask 022
+fi
+
+export PROMPT_COMMAND=''
+export PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ '
