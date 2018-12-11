@@ -1,7 +1,7 @@
 #!/bin/bash
 
-_conf="~/.conf"
-_conf_orig="~/.conf_orig"
+_conf="$HOME/.conf/conf"
+_conf_orig="$HOME/.conf_orig"
 _conf_files=( \
     bashrc bash_profile profile bash_logout \
     gitconfig \

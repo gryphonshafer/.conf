@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. ~/.conf/settings
+. $HOME/.conf/settings
 
 if [ ! -d $_conf_orig ]
 then
@@ -9,14 +9,14 @@ fi
 
 for _file in "${_conf_files[@]}"
 do
-    if [ ! -h "~/.${_file}" ]
+    if [ ! -h "$HOME/.${_file}" ]
     then
-        if [ -e "~/.${_file}" ]
+        if [ -e "$HOME/.${_file}" ]
         then
-            /bin/cp -rp "~/.${_file}" "${_conf_orig}/${_file}"
+            /bin/mv "$HOME/.${_file}" "${_conf_orig}/${_file}"
         fi
 
-        /bin/ln -s "${_conf}/${_file}" "~/.${_file}"
+        /bin/ln -s "${_conf}/${_file}" "$HOME/.${_file}"
         echo "Successfully installed: ~/.${_file}"
     else
         echo "Previously installed: ~/.${_file}"
@@ -25,14 +25,14 @@ done
 
 for _file in "${_ssh_files[@]}"
 do
-    if [ ! -h "~/.ssh/${_file}" ]
+    if [ ! -h "$HOME/.ssh/${_file}" ]
     then
-        if [ -e "~/.ssh/${_file}" ]
+        if [ -e "$HOME/.ssh/${_file}" ]
         then
-            /bin/cp -rp "~/.ssh/${_file}" "${_conf_orig}/ssh_${_file}"
+            /bin/mv "$HOME/.ssh/${_file}" "${_conf_orig}/ssh_${_file}"
         fi
 
-        /bin/ln -s "${_conf}/ssh_${_file}" "~/.ssh/${_file}"
+        /bin/ln -s "${_conf}/ssh_${_file}" "$HOME/.ssh/${_file}"
         echo "Successfully installed: ~/.ssh/${_file}"
     else
         echo "Previously installed: ~/.ssh/${_file}"
