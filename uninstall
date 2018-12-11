@@ -30,3 +30,5 @@ if [ -d $_conf_orig ]
 then
     /bin/rmdir $_conf_orig
 fi
+
+. $HOME/.bashrc
