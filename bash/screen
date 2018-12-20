@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 alias screen="TERM=screen screen"
 alias sc="screen -aAxRR"

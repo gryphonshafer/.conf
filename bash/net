@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 alias sdate="sudo ntpdate pool.ntp.org"
 alias stime="sudo ntpdate pool.ntp.org"

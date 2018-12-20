@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 alias ls="ls -Fv --group-directories-first --color=auto"
     # prefix type, human-readable, natural sort, dirs first, color

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function history_cmd {
     history -a # immediately append history to file

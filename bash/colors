@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 export CLICOLOR="true"
 export LS_OPTIONS='--color=yes'

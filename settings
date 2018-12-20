@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 _conf="$HOME/.conf/conf"
 _conf_orig="$HOME/.conf_orig"

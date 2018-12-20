@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+function ssl_generate {
+    ssl_dir="."
+    ssl_password=${ssl_password:-`openssl rand -base64 15`}
+
+    openssl genrsa -des3 -passout pass:$ssl_password -out $ssl_dir/${1}.key 2048
+    openssl rsa -in $ssl_dir/${1}.key -passin pass:$ssl_password -out $ssl_dir/${1}.key
+
+    openssl req -new -key $ssl_dir/${1}.key -out $ssl_dir/${1}.csr -passin pass:$ssl_password 
+
+    openssl x509 -req -days 9000 -in $ssl_dir/${1}.csr \
+        -signkey $ssl_dir/${1}.key -out $ssl_dir/${1}.crt
+
+    rm $ssl_dir/${1}.csr
+}
