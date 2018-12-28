@@ -19,7 +19,7 @@ vbell off
 # enable alternate screen support (for virtual terminals)
 altscreen on
 
-backtick 1 10 10 $HOME/bin/free_memory
+backtick 1 10 10 free_memory
 
 # status and caption lines
 hardstatus alwayslastline '%{= .G}[ %{g}%H %{r}%l %{B}%1` %{G}][%=%{c}%S: %{w}%?%-Lw%?%?%E%{R}{%{-}%:%{r}(%{-}%?%{Y}%n*%f %t%? %{g}%u%{-}%?%{-}%?%E%{R}}%{-}%:%{r})%{-}%?%?%+Lw%? %=%{G}][ %{m}%D %{B}%M %d %{g}%C:%s %A %{G}]'
