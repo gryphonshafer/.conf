@@ -1,6 +1,5 @@
-Host ufda
+Host www
     HostName gryphonshafer.com
-    Port 4222
 
 Host uber
     HostName mail.gryphonshafer.com
