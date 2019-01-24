@@ -40,7 +40,7 @@ As dev user:
 
     git clone ssh://git@git.goldenguru.com:6722/goldenguru/hal
     cd hal
-    scp -r -P 4222 old_server:/home/starman/bots/hal/local .
+    scp -r www:/home/ops/bots/hal/local .
     chmod a+w local/hal.*
     cd ..
     sudo mv hal /home/ops/.
@@ -91,7 +91,7 @@ As root user:
 As dev user:
 
     cd
-    scp -r -P 4222 old_server:/home/gryphon/crons .
+    scp -r www:/home/gryphon/crons .
     cd ~/crons
     cpanm -n -f --installdeps .
 
@@ -103,7 +103,7 @@ As dev user:
 
     git clone ssh://git@git.goldenguru.com:6722/goldenguru/ggtt
     cd ggtt
-    scp -r -P 4222 old_server:/var/www/goldenguru.com/ggtt/local .
+    scp -r www:/var/www/goldenguru.com/ggtt/local .
 
     sudo chown ops local
     cd local
@@ -304,7 +304,7 @@ As root user:
 
     mkdir /root/docker
     cd /root/docker
-    scp -r -P 4222 old_server:/root/docker/ssh_chroot .
+    scp -r www:/root/docker/ssh_chroot .
 
     cd /root/docker/ssh_chroot
     docker build -t ssh_chroot .
@@ -318,9 +318,9 @@ As dev user:
     cd ..
     sudo mv cbqz /var/www/cbqz.org/.
     cd /var/www/cbqz.org/cbqz
-    scp -r -P 4222 old_server:/var/www/cbqz.org/cbqz/.dest .
-    scp -r -P 4222 old_server:/var/www/cbqz.org/cbqz/runtime .
-    scp -r -P 4222 old_server:/var/www/cbqz.org/cbqz/data .
+    scp -r www:/var/www/cbqz.org/cbqz/.dest .
+    scp -r www:/var/www/cbqz.org/cbqz/runtime .
+    scp -r www:/var/www/cbqz.org/cbqz/data .
 
     cd /var/www/cbqz.org/cbqz
     perlbrew lib create cbqz
@@ -366,3 +366,31 @@ As root user:
         --restart unless-stopped \
         --volume `pwd`:/cbqz \
         cbqz
+
+## Letsencrypt Automation
+
+To generate new certificates and establish these for auto-renewal:
+
+    certbot certonly --webroot -w /var/www/cbqz.org/htdocs -d cbqz.org,www.cbqz.org
+    certbot certonly --webroot -w /var/www/gldg.us -d gldg.us,www.gldg.us
+    certbot certonly --webroot -w /var/www/gldg.us -d plex.gryphonshafer.com
+    certbot certonly --webroot -w /var/www/gldg.us -d shfr.us,www.shfr.us
+    certbot certonly --webroot -w /var/www/goldenguru.com/htdocs -d goldenguru.com,www.goldenguru.com,goldenguru.org,www.goldenguru.org
+    certbot certonly --webroot -w /var/www/goldenguru.com/htdocs -d irc.goldenguru.com
+    certbot certonly --webroot -w /var/www/goldenguru.com/htdocs -d git.goldenguru.com
+    certbot certonly --webroot -w /var/www/gryphonshafer.com/htdocs -d gryphonshafer.com,www.gryphonshafer.com,gryphonshafer.net,www.gryphonshafer.net,gryphonshafer.org,www.gryphonshafer.org
+    certbot certonly --webroot -w /var/www/pnwti.org -d pnwti.org,www.pnwti.org,pnwti.com,www.pnwti.com
+    certbot certonly --webroot -w /var/www/pocog.org -d pocog.org,www.pocog.org
+    certbot certonly --webroot -w /var/www/prextrade.com -d prextrade.com,www.prextrade.com
+    certbot certonly --webroot -w /var/www/rebelair.club -d rebelair.club,www.rebelair.club
+    certbot certonly --webroot -w /var/www/stewardhouse.com -d stewardhouse.com,www.stewardhouse.com
+    certbot certonly --webroot -w /var/www/swapgain.com -d swapgain.com,www.swapgain.com
+    certbot certonly --webroot -w /var/www/wasgod.org/htdocs -d wasgod.org,www.wasgod.org
+
+To list the certificates `letsencrypt` manages:
+
+    certbot certificates
+
+To renew certificates:
+
+    certbot renew --post-hook "systemctl nginx reload; systemctl ircd-hybrid reload"
