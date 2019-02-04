@@ -1,12 +1,6 @@
-Host www
-    HostName gryphonshafer.com
-
-Host uber
+Host mail
     HostName mail.gryphonshafer.com
     Port 4222
-
-Host git
-    HostName git.goldenguru.com
 
 Host ggssh
     User link
@@ -20,3 +14,7 @@ Host vmssh
     RemoteForward 4231 localhost:22
     ServerAliveInterval 60
     TCPKeepAlive yes
+
+Host titanic
+    HostName localhost
+    Port 4231
