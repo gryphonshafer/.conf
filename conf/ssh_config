@@ -1,6 +1,12 @@
+Host www
+    HostName www.goldenguru.com
+
 Host mail
-    HostName mail.gryphonshafer.com
+    HostName mail.goldenguru.com
     Port 4222
+
+Host git
+    HostName git.goldenguru.com
 
 Host ggssh
     User link
