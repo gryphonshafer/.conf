@@ -13,4 +13,4 @@
 -nolq   # Don't outdent long quoted strings
 
 # Break after all operators
--wba="% + - * / x != == >= <= =~ < > | & **= += *= &= <<= &&= -= /= |= >>= ||= . += %= ^= x=" 
+-wba="% + - * / x != == >= <= =~ < > | & **= += *= &= <<= &&= -= /= |= >>= ||= . += %= ^= x="

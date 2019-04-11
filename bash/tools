@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+function install_tool {
+    _version=$( \
+        curl --silent "https://api.github.com/repos/$1/$2/releases/latest" | \
+            grep '"tag_name":' | \
+            sed -E 's/.*"([^"]+)".*/\1/' | \
+            sed -e 's/^v//'
+    )
+
+    _package='/tmp/'$1'_'$2'_'$_version'_amd64.deb'
+    _url="https://github.com/$1/$2/releases/download/v$_version/"$2'_'$_version'_amd64.deb'
+
+    wget -O $_package $_url
+    sudo dpkg -i $_package
+    rm $_package
+}
+
+function install_tools {
+    _install_tools=( \
+        sharkdp bat \
+        sharkdp fd \
+    )
+
+    for (( i = 0; i < ${#_install_tools[@]}; i += 2 ))
+    do
+        echo "INSTALLING: ${_install_tools[$i]} ${_install_tools[$i+1]}"
+        install_tool ${_install_tools[$i]} ${_install_tools[$i+1]}
+    done
+}
