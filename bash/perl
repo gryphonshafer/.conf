@@ -22,10 +22,10 @@ alias repl="reply"
 function cpanf {
     if [ "$1" == '-l' ]
     then
-        \grep "^\s*feature '.*sub" ~/bin/cpanfile | perl -F"/'([^']+)'/" -ae "printf qq{%-10s %s\n}, @F[1,3]"
+        \grep "^\s*feature '.*sub" ~/.conf/cpanfile | perl -F"/'([^']+)'/" -ae "printf qq{%-10s %s\n}, @F[1,3]"
     elif [ "$1" == '-f' ]
     then
-        cat ~/bin/cpanfile
+        cat ~/.conf/cpanfile
     elif [ "$1" == '-i' ]
     then
         for feature in $*
@@ -34,7 +34,7 @@ function cpanf {
             then
                 continue
             fi
-            cpanm -n -f --installdeps ~/bin --with-feature=$feature
+            cpanm -n -f --installdeps ~/.conf --with-feature=$feature
         done
     elif [ "$1" == '-a' ]
     then
