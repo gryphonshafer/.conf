@@ -13,6 +13,8 @@ alias cpanidd="cpanm -n -f --with-develop --installdeps ."
 alias cpanida="cpanm -n -f --with-develop --with-all-features --installdeps ."
 
 alias pc="cover -delete; HARNESS_PERL_SWITCHES=-MDevel::Cover prove t; cover"
+alias pr=prove
+alias prv="prove --norc -v"
 
 alias r="reply"
 alias repl="reply"
