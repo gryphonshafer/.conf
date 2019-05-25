@@ -8,6 +8,7 @@ alias wcl='wc --lines'
 alias rebash="source ~/.bashrc"
 alias hed='head -n $(( $(tput lines) - 2 ))'
 alias tal='tail -n $(( $(tput lines) - 2 ))'
+alias be="sudo su -l"
 
 alias rm='rm -f'
 alias rd='rm -rf'
