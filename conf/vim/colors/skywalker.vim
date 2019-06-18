@@ -17,41 +17,41 @@ let g:colors_name = "Skywalker"
 " 6 - Cyan
 " 7 - White
 
-"hi Normal         cterm=none        ctermfg=White    ctermbg=none      gui=none         guifg=White     guibg=none
-hi Comment        cterm=none        ctermfg=Green    ctermbg=none      gui=none         guifg=Green     guibg=none
-hi Constant       cterm=none        ctermfg=White    ctermbg=none      gui=none         guifg=White     guibg=none
-hi Special        cterm=none        ctermfg=Yellow   ctermbg=none      gui=none         guifg=Yellow    guibg=none
-hi Identifier     cterm=none        ctermfg=Cyan     ctermbg=none      gui=none         guifg=Blue      guibg=none
-hi Statement      cterm=none        ctermfg=Blue     ctermbg=none      gui=none         guifg=Blue      guibg=none
-hi Type           cterm=none        ctermfg=Red      ctermbg=none      gui=none         guifg=Green     guibg=none
-hi PreProc        cterm=none        ctermfg=Yellow   ctermbg=none      gui=none         guifg=Cyan      guibg=none
+"hi Normal         cterm=NONE        ctermfg=White    ctermbg=NONE      gui=NONE         guifg=White     guibg=NONE
+hi Comment        cterm=NONE        ctermfg=Green    ctermbg=NONE      gui=NONE         guifg=Green     guibg=NONE
+hi Constant       cterm=NONE        ctermfg=White    ctermbg=NONE      gui=NONE         guifg=White     guibg=NONE
+hi Special        cterm=NONE        ctermfg=Yellow   ctermbg=NONE      gui=NONE         guifg=Yellow    guibg=NONE
+hi Identifier     cterm=NONE        ctermfg=Cyan     ctermbg=NONE      gui=NONE         guifg=Blue      guibg=NONE
+hi Statement      cterm=NONE        ctermfg=Blue     ctermbg=NONE      gui=NONE         guifg=Blue      guibg=NONE
+hi Type           cterm=NONE        ctermfg=Red      ctermbg=NONE      gui=NONE         guifg=Green     guibg=NONE
+hi PreProc        cterm=NONE        ctermfg=Yellow   ctermbg=NONE      gui=NONE         guifg=Cyan      guibg=NONE
 
-hi Todo           cterm=none        ctermfg=White    ctermbg=Red       gui=none         guifg=Black     guibg=Yellow
-hi Cursor         cterm=none        ctermfg=Black    ctermbg=Yellow    gui=none         guifg=Black     guibg=White
-hi Search         cterm=none        ctermfg=Yellow   ctermbg=Red      gui=none         guifg=Black     guibg=Yellow
-hi IncSearch      cterm=none        ctermfg=Black    ctermbg=White     gui=none         guifg=Black     guibg=Yellow
+hi Todo           cterm=NONE        ctermfg=White    ctermbg=Red       gui=NONE         guifg=Black     guibg=Yellow
+hi Cursor         cterm=NONE        ctermfg=Black    ctermbg=Yellow    gui=NONE         guifg=Black     guibg=White
+hi Search         cterm=NONE        ctermfg=Yellow   ctermbg=Red      gui=NONE         guifg=Black     guibg=Yellow
+hi IncSearch      cterm=NONE        ctermfg=Black    ctermbg=White     gui=NONE         guifg=Black     guibg=Yellow
 
-hi Folded         cterm=none        ctermfg=Cyan     ctermbg=none      gui=none         guifg=Gray      guibg=Black
-hi FoldColumn     cterm=none        ctermfg=Cyan     ctermbg=none      gui=none         guifg=Black     guibg=Gray
+hi Folded         cterm=NONE        ctermfg=Cyan     ctermbg=NONE      gui=NONE         guifg=Gray      guibg=Black
+hi FoldColumn     cterm=NONE        ctermfg=Cyan     ctermbg=NONE      gui=NONE         guifg=Black     guibg=Gray
 
-hi StatusLine     cterm=none        ctermfg=White    ctermbg=Blue      gui=none         guifg=White     guibg=DarkBlue
-hi StatusLineNC   cterm=none        ctermfg=White    ctermbg=Red       gui=none         guifg=Black     guibg=DarkRed
-hi VertSplit      cterm=none        ctermfg=White    ctermbg=Red       gui=none         guifg=DarkRed   guibg=none
-hi NonText        cterm=none        ctermfg=Black    ctermbg=none      gui=none         guifg=Gray      guibg=DarkBlue
+hi StatusLine     cterm=NONE        ctermfg=White    ctermbg=Blue      gui=NONE         guifg=White     guibg=DarkBlue
+hi StatusLineNC   cterm=NONE        ctermfg=White    ctermbg=Red       gui=NONE         guifg=Black     guibg=DarkRed
+hi VertSplit      cterm=NONE        ctermfg=White    ctermbg=Red       gui=NONE         guifg=DarkRed   guibg=NONE
+hi NonText        cterm=NONE        ctermfg=Black    ctermbg=NONE      gui=NONE         guifg=Gray      guibg=DarkBlue
 
 hi clear Visual
-hi Visual         cterm=none        ctermfg=Yellow   ctermbg=Blue      gui=none         guifg=Black     guibg=Cyan
+hi Visual         cterm=NONE        ctermfg=Yellow   ctermbg=Blue      gui=NONE         guifg=Black     guibg=Cyan
 
-hi ModeMsg        cterm=underline   ctermfg=Yellow                     gui=none         guifg=Yellow
-hi MoreMsg        cterm=underline   ctermfg=Yellow                     gui=none         guifg=Yellow
-hi Error          cterm=none        ctermfg=White    ctermbg=Red       gui=none         guifg=White     guibg=Red
-hi ErrorMsg       cterm=none        ctermfg=White                      gui=none         guifg=White
-hi WarningMsg     cterm=none        ctermfg=Cyan                       gui=none         guifg=Cyan
+hi ModeMsg        cterm=underline   ctermfg=Yellow                     gui=NONE         guifg=Yellow
+hi MoreMsg        cterm=underline   ctermfg=Yellow                     gui=NONE         guifg=Yellow
+hi Error          cterm=NONE        ctermfg=White    ctermbg=Red       gui=NONE         guifg=White     guibg=Red
+hi ErrorMsg       cterm=NONE        ctermfg=White                      gui=NONE         guifg=White
+hi WarningMsg     cterm=NONE        ctermfg=Cyan                       gui=NONE         guifg=Cyan
 
-hi DiffText       cterm=none        ctermfg=Black    ctermbg=Green     gui=none         guifg=Black     guibg=LightGreen
-hi DiffAdd        cterm=none        ctermfg=Black    ctermbg=Blue      gui=none         guifg=Black     guibg=Blue
-hi DiffDelete     cterm=none        ctermfg=Black    ctermbg=Cyan      gui=none         guifg=Black     guibg=Cyan
-hi DiffText       cterm=none        ctermfg=Black    ctermbg=Red       gui=none         guifg=Black     guibg=Red
+hi DiffText       cterm=NONE        ctermfg=Black    ctermbg=Green     gui=NONE         guifg=Black     guibg=LightGreen
+hi DiffAdd        cterm=NONE        ctermfg=Black    ctermbg=Blue      gui=NONE         guifg=Black     guibg=Blue
+hi DiffDelete     cterm=NONE        ctermfg=Black    ctermbg=Cyan      gui=NONE         guifg=Black     guibg=Cyan
+hi DiffText       cterm=NONE        ctermfg=Black    ctermbg=Red       gui=NONE         guifg=Black     guibg=Red
 
 hi Underlined     cterm=underline                                      gui=underline
-hi Ignore         cterm=underline   ctermfg=White    ctermbg=none      gui=none         guifg=White     guibg=none
+hi Ignore         cterm=underline   ctermfg=White    ctermbg=NONE      gui=NONE         guifg=White     guibg=NONE

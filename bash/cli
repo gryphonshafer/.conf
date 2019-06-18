@@ -72,7 +72,7 @@ function mcd {
 }
 
 function mf {
-    echo -e "\n\n" > $1
+    echo '' > $1
 }
 
 function mx {
