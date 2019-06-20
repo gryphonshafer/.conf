@@ -3,7 +3,6 @@ Host www
 
 Host mail
     HostName mail.goldenguru.com
-    Port 4222
 
 Host git
     HostName git.goldenguru.com
