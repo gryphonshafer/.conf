@@ -83,8 +83,9 @@ function pb_vers_inst {
     done
 }
 
-function perl_dev_stuff {
+function public_perl_dev_stuff {
     cd
+    mcd github
     github_clone
     cpanf -a
     github_cpan
