@@ -57,7 +57,7 @@ EOF
     fi
 }
 
-function pblibcp {
+function pb_lib_cp {
     perl -MExtUtils::Installed -E 'say for ExtUtils::Installed->new->modules' > /tmp/pblibcp_$$
 
     perlbrew lib create $1
@@ -65,4 +65,28 @@ function pblibcp {
 
     cat /tmp/pblibcp_$$ | cpanm --interactive -n -f
     rm /tmp/pblibcp_$$
+}
+
+function pb_vers_inst {
+    for version in $(
+        perlbrew available | grep perl | grep -v '^i' | grep -v 'cperl' | egrep -v '0\s*$' | \
+        xargs perl -e '
+            for (@ARGV) {
+                /(perl\-\d+\.\d+)\.(\d+)/;
+                $ver{$1} = $2 if ( not $ver{$1} or $ver{$1} < $2 );
+            }
+            print join( "\n", reverse sort map { $_ . q(.) . $ver{$_} } keys %ver ), "\n";
+        '
+    )
+    do
+        perlbrew install -n $version
+    done
+}
+
+function perl_dev_stuff {
+    cd
+    github_clone
+    cpanf -a
+    github_cpan
+    pb_vers_inst
 }
