@@ -79,7 +79,7 @@ function pb_vers_inst {
         '
     )
     do
-        perlbrew install -n $version
+        sudo su -l root bash -c "perlbrew install -n $version"
     done
 }
 
