@@ -39,4 +39,9 @@ do
     fi
 done
 
+if [ ! -f "$HOME/.dzil.ini" ]
+then
+    /bin/cp "${_conf}/dzil/config.ini.src" "$HOME/.dzil.ini"
+fi
+
 . $HOME/.bashrc
