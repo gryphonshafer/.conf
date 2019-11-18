@@ -1,0 +1,59 @@
+#!/usr/bin/env perl
+use Cwd;
+use Encode 'decode_utf8';
+use Mojo::File;
+use Mojolicious::Lite;
+use Text::MultiMarkdown 'markdown';
+use exact;
+
+plugin( 'Directory',
+    root       => cwd,
+    auto_index => 1,
+    dir_index  => [ qw( index.html index.htm index.cgi ) ],
+    handler    => sub ( $c, $path ) {
+        if ( -f $path ) {
+            if ( $path =~ /\.(?:md|mkdn)$/i ) {
+                $c->render( inline => markdown( decode_utf8( Mojo::File->new($path)->slurp ) ) );
+            }
+            elsif ( $path =~ /\.(?:cgi|pl|plx)$/i ) {
+                my $tx             = $c->tx;
+                my $req            = $tx->req;
+                my $headers        = $req->headers;
+                my $content_length = $req->content->is_multipart ? $req->body_size : $headers->content_length;
+                my %env_headers    = ( HTTP_COOKIE => '', HTTP_REFERER => '' );
+
+                for my $name ( @{ $headers->names } ) {
+                    my $key = uc "http_$name";
+                    $key =~ s!\W!_!g;
+                    $env_headers{$key} = $headers->header($name);
+                }
+
+                my %original_env = %ENV;
+
+                %ENV = (
+                    %ENV,
+                    CONTENT_LENGTH    => $content_length        || 0,
+                    CONTENT_TYPE      => $headers->content_type || '',
+                    GATEWAY_INTERFACE => 'CGI/1.1',
+                    HTTPS             => $req->is_secure ? 'YES' : 'NO',
+                    %env_headers,
+                    QUERY_STRING    => $req->url->query->to_string,
+                    REMOTE_ADDR     => $tx->remote_address,
+                    REMOTE_PORT     => $tx->remote_port,
+                    REQUEST_METHOD  => $req->method,
+                    SERVER_ADMIN    => $ENV{USER} || '',
+                    SERVER_PORT     => $tx->local_port,
+                    SERVER_PROTOCOL => $req->is_secure ? 'HTTPS' : 'HTTP',
+                );
+
+                my $content = `$path`;
+                %ENV = %original_env;
+
+                $c->res->headers->parse($content);
+                $content =~ s/^(?:[\w\-]+:[ ]*[^\r\n]+\r?\n)+\r?\n//m;
+
+                $c->render( inline => $content );
+            }
+        }
+    },
+)->start;

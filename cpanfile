@@ -90,6 +90,9 @@ feature 'mojo', 'Mojolicious Development' => sub {
     requires 'Mojolicious::Plugin::ToolkitRenderer';
     requires 'MojoX::Log::Dispatch::Simple';
 
+    requires 'Mojolicious::Plugin::Directory';
+    requires 'Text::MultiMarkdown';
+
     requires 'Template';
     requires 'Input::Validator';
 };
