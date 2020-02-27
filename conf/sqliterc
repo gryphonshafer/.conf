@@ -1,3 +1,4 @@
 .mode column
 .headers on
 .nullvalue NULL
+.load /usr/lib/sqlite3/pcre.so
