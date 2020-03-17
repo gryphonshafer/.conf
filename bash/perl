@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
 alias t2s="perl -p -i -e 's/\t/    /g'"
-alias perlmods="perl -MExtUtils::Installed -E 'say for ExtUtils::Installed->new->modules'"
-alias perlmods_date="perldoc -t perllocal | awk '{ if (/Module/) print \$7}' "
-
 alias pb="perlbrew"
 alias d="dest"
 

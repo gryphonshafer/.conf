@@ -1,11 +1,129 @@
 #!/usr/bin/env perl
-use strict;
-use warnings;
+use exact -cli;
+
+use Module::CPANfile;
+use Perl::PrereqScanner;
+use File::Find 'find';
 use ExtUtils::Installed;
+use Mojo::Promise;
+use Mojo::UserAgent;
 
-my $instmod = ExtUtils::Installed->new();
+my $opt = options( qw( cpanfile|f=s directory|d=s@ installed|i latest|l ) );
 
-foreach my $module ( $instmod->modules() ) {
-    my $version = $instmod->version($module) || "???";
-    print "$module -- $version\n";
+my $cpanfile = Module::CPANfile->from_prereqs;
+
+if ( $opt->{cpanfile} ) {
+    die "Cannot read file: $opt->{cpanfile}\n" unless ( -r $opt->{cpanfile} );
+    $cpanfile = Module::CPANfile->load($opt->{cpanfile} );
 }
+
+elsif ( $opt->{directory} ) {
+    my $scanner = Perl::PrereqScanner->new;
+    my $prereqs;
+
+    find (
+        {
+            follow   => 1,
+            no_chdir => 1,
+            wanted   => sub {
+                return unless (-f);
+                unless (-r) {
+                    warn "File not readable: $_\n";
+                    return;
+                }
+
+                my $this_prereqs = $scanner->scan_file($_)->as_string_hash;
+
+                for ( keys %$this_prereqs ) {
+                    ( my $saved = $prereqs->{$_}      || 0 ) =~ s/[^\d\.]+//g;
+                    ( my $new   = $this_prereqs->{$_} || 0 ) =~ s/[^\d\.]+//g;
+
+                    $prereqs->{$_} = $this_prereqs->{$_}
+                        if ( not exists $prereqs->{$_} or $new > $saved );
+                }
+            },
+        },
+        @{ $opt->{directory} },
+    );
+
+    $cpanfile = Module::CPANfile->from_prereqs({
+        runtime => { requires => {
+            map { $_ => $prereqs->{$_} } sort keys %$prereqs
+        } },
+    });
+}
+
+elsif ( $opt->{installed} ) {
+    my $instmod = ExtUtils::Installed->new;
+    my %modules = map { $_ => $instmod->version($_) } $instmod->modules;
+
+    $cpanfile = Module::CPANfile->from_prereqs({
+        runtime => { requires => {
+            map { $_ => $modules{$_} } sort keys %modules
+        } },
+    });
+}
+
+if ( $opt->{latest} ) {
+    my $ua = Mojo::UserAgent->new;
+
+    my ( $promises, $requirements );
+    for my $feature ( keys %{ $cpanfile->{_prereqs}{prereqs} } ) {
+        for my $module ( @{ $cpanfile->{_prereqs}{prereqs}{$feature} } ) {
+            push( @$requirements, $module->{requirement} );
+            push( @$promises, $ua->get_p( 'https://metacpan.org/pod/' . $module->{module} ) );
+        }
+    }
+
+    Mojo::Promise->all(@$promises)->then( sub {
+        for my $i ( 0 .. @_ - 1 ) {
+            if ( my $version = $_[$i]->[0]->result->dom->at('span[itemprop="softwareVersion"]') ) {
+                $requirements->[$i]{version} = $version->text || 0;
+            }
+        }
+    } )->wait;
+}
+
+say $cpanfile->to_string;
+
+=head1 NAME
+
+perl_modules - Display information about installed or found Perl modules
+
+=head1 SYNOPSIS
+
+    perl_modules OPTIONS
+        -c|cpanfile  FILE # source from cpanfile-like files
+        -d|directory DIR  # source from Perl statements in directories
+        -i|installed      # source from installed modules
+        -l|latest         # set latest version numbers from CPAN
+        -h|help
+        -m|man
+
+=head1 DESCRIPTION
+
+This program will display information about installed or found Perl modules. It
+loads "base data" from one of a variety of sources, specified by input values.
+It will then dump a cpanfile. Optionally, it can check CPAN for the latest
+version numbers and update these in the output.
+
+=head1 OPTIONS
+
+=head2 cpanfile
+
+This option loads a single cpanfile as base data.
+
+=head2 directory
+
+This option (which can be included multiple times in a single run) will look
+through the directory specified to find Perl module requirements and add them
+to the base data.
+
+=head2 installed
+
+This option loads into base data all the currently installed Perl modules.
+
+=head2 latest
+
+This option will check CPAN for the latest version of base data modules and
+update their required versions to the latest versions.
