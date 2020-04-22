@@ -93,12 +93,12 @@ perl_modules - Display information about installed or found Perl modules
 =head1 SYNOPSIS
 
     perl_modules OPTIONS
-        -c|cpanfile  FILE # source from cpanfile-like files
-        -d|directory DIR  # source from Perl statements in directories
-        -i|installed      # source from installed modules
-        -l|latest         # set latest version numbers from CPAN
-        -h|help
-        -m|man
+        -c, --cpanfile  FILE  # source from cpanfile-like files
+        -d, --directory DIR   # source from Perl statements in directories
+        -i, --installed       # source from installed modules
+        -l, --latest          # set latest version numbers from CPAN
+        -h, --help
+        -m, --man
 
 =head1 DESCRIPTION
 
@@ -109,21 +109,21 @@ version numbers and update these in the output.
 
 =head1 OPTIONS
 
-=head2 cpanfile
+=head2 -c, --cpanfile
 
 This option loads a single cpanfile as base data.
 
-=head2 directory
+=head2 -d, --directory
 
 This option (which can be included multiple times in a single run) will look
 through the directory specified to find Perl module requirements and add them
 to the base data.
 
-=head2 installed
+=head2 -i, --installed
 
 This option loads into base data all the currently installed Perl modules.
 
-=head2 latest
+=head2 -l, --latest
 
 This option will check CPAN for the latest version of base data modules and
 update their required versions to the latest versions.
