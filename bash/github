@@ -3,7 +3,7 @@
 function github_clone {
     pages=$( \
         curl -sI https://api.github.com/users/gryphonshafer/repos | \
-        grep 'Link:' | \
+        grep -i 'link:' | \
         perl -ae '/^.*page=(\d+)>;\srel="last".*$/; print $1' \
     )
 
