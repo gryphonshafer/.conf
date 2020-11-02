@@ -1,6 +1,8 @@
 feature 'cpan', 'cpan Modules' => sub {
     requires 'App::cpanminus';
     requires 'App::cpanoutdated';
+    requires 'Module::Signature';
+    requires 'Digest::SHA';
 };
 
 feature 'exact', 'exact Modules' => sub {
