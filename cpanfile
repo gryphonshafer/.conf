@@ -10,6 +10,8 @@ feature 'exact', 'exact Modules' => sub {
     requires 'exact::class';
     requires 'exact::cli';
     requires 'exact::conf';
+    requires 'exact::me';
+    requires 'exact::lib';
 };
 
 feature 'develop', 'Development Tools' => sub {
