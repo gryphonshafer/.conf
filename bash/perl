@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export PERL_CPANM_OPT="--from https://cpan.metacpan.org/ --verify --quiet --notest --force --skip-satisfied"
+export PERL_CPANM_OPT="--from https://cpan.metacpan.org/ --verify --notest --force --skip-satisfied"
 
 alias t2s="perl -p -i -e 's/\t/    /g'"
 alias pb="perlbrew"
