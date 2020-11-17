@@ -131,6 +131,7 @@
     bl       = branch -v -v -a
     cob      = checkout -b
     branches = branch -a
+    sb       = show-branch
 
     # index add
     a  = add
