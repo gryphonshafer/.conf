@@ -61,6 +61,11 @@ if ( length($_git_remote) > 0 and $_git_remote ne '.' and substr( $_git_branch, 
     }
 }
 
+if ( length($_git_ab) == 0 ) {
+    my ($_git_local_unpushed) = run("git log origin.. --oneline --no-color | wc -l");
+    $_git_ab = "(~$_git_local_unpushed)" if ($_git_local_unpushed);
+}
+
 my $_git_smu = ( $_git_staged > 0 or $_git_modified > 0 or $_git_untracked > 0 )
     ? "$_git_staged.$_git_modified.$_git_untracked"
     : '';
