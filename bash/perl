@@ -2,18 +2,22 @@
 
 export PERL_CPANM_OPT="--from https://cpan.metacpan.org/ --verify --notest --force --skip-satisfied"
 
+alias cpanid="cpanm --installdeps ."
+alias cpanidd="cpanm --with-develop --installdeps ."
+alias cpanida="cpanm --with-develop --with-all-features --installdeps ."
+
+alias pc="cover -delete -silent; HARNESS_PERL_SWITCHES=-MDevel::Cover prove t; cover -silent"
+alias pr=prove
+alias prv="prove --norc -v"
+
+alias yt="yath test"
+alias ytc="cover -delete -silent; yath test --cover; cover -silent"
+alias ytp="rm ./nytprof.out.*; yath test --nytprof; nytprofhtml -d -o ./nytprof -f ./nytprof.out.*; rm ./nytprof.out.*"
+alias ytcp="cover -delete -silent; rm ./nytprof.out.*; yath test --cover --nytprof; cover -silent; nytprofhtml -d -o ./nytprof -f ./nytprof.out.*; rm ./nytprof.out.*"
+
 alias t2s="perl -p -i -e 's/\t/    /g'"
 alias pb="perlbrew"
 alias d="dest"
-
-alias cpan="cpanm -n -f"
-alias cpanid="cpanm -n -f --installdeps ."
-alias cpanidd="cpanm -n -f --with-develop --installdeps ."
-alias cpanida="cpanm -n -f --with-develop --with-all-features --installdeps ."
-
-alias pc="cover -delete; HARNESS_PERL_SWITCHES=-MDevel::Cover prove t; cover"
-alias pr=prove
-alias prv="prove --norc -v"
 
 alias r="reply"
 alias repl="reply"

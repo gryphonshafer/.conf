@@ -26,9 +26,10 @@ feature 'develop', 'Development Tools' => sub {
 };
 
 feature 'test', 'Testing Tools' => sub {
-    requires 'Test::Most';
+    requires 'Test2::V0';
+    requires 'Test2::Harness';
 
-    requires 'Test::Class';
+    requires 'Test::Most';
     requires 'Test::MockModule';
 
     requires 'WWW::Mechanize';
@@ -42,7 +43,6 @@ feature 'test', 'Testing Tools' => sub {
     requires 'Test::Pod::Coverage';
     requires 'Test::Synopsis';
 
-    requires 'Devel::Cover::Report::Coveralls';
     requires 'Pod::Coverage::TrustPod';
 };
 
@@ -53,6 +53,7 @@ feature 'cover', 'Coverage Analysis' => sub {
     requires 'Pod::Coverage::CountParents';
     requires 'PPI::HTML';
     requires 'Template';
+    requires 'JSON::MaybeXS';
 };
 
 feature 'data', 'Data Access Channels' => sub {
