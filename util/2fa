@@ -1,0 +1,12 @@
+#!/usr/bin/env perl
+use exact;
+use Auth::GoogleAuth;
+use Term::ReadKey 'ReadMode';
+
+print 'Enter 2FA "secret32" string: ';
+ReadMode 'noecho';
+my $secret32 = <STDIN>;
+ReadMode 'normal';
+chomp $secret32;
+
+say Auth::GoogleAuth->new({ secret32 => $secret32 })->code;
