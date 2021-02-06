@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-function github_clone {
+function github_repos {
     pages=$( \
         curl -sI https://api.github.com/users/gryphonshafer/repos | \
         grep -i 'link:' | \
@@ -9,13 +9,15 @@ function github_clone {
 
     for page in $( seq 1 $pages )
     do
-        for repo_url in $( \
-            curl -s https://api.github.com/users/gryphonshafer/repos?page=$page \
-                | grep git_url | perl -pe 's/^.*"\s*:\s*"|",//g' \
-        )
-        do
-            git clone $repo_url
-        done
+        curl -s https://api.github.com/users/gryphonshafer/repos?page=$page \
+            | grep git_url | perl -pe 's/^.*"\s*:\s*"|",//g'
+    done
+}
+
+function github_clone {
+    for repo_url in $( github_repos )
+    do
+        git clone $repo_url
     done
 
     for i in $( /bin/ls --color=never )
