@@ -102,7 +102,12 @@ if ( $opt->{latest} ) {
     Mojo::Promise->all(@$promises)->then( sub {
         for my $i ( 0 .. @_ - 1 ) {
             if ( my $version = $_[$i]->[0]->result->dom->at('span[itemprop="softwareVersion"]') ) {
-                $requirements->[$i]{version} = $version->text || 0;
+                $requirements->[$i]{version} = (
+                    grep { $_ eq $requirements->[$i]->{name} } qw(
+                        File::Find
+                        File::Copy
+                    )
+                ) ? 0 : $version->text || 0;
             }
         }
     } )->wait;
