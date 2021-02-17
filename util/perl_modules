@@ -10,6 +10,10 @@ use Mojo::UserAgent;
 
 my $opt = options( qw( cpanfile|f=s directory|d=s@ installed|i latest|l ) );
 
+exact->monkey_patch( 'Module::CPANfile', features => sub ($self) {
+    sort { $a->{identifier} cmp $b->{identifier} } map { $self->feature($_) } $self->{_prereqs}->identifiers;
+} );
+
 my $cpanfile = Module::CPANfile->from_prereqs;
 
 if ( $opt->{cpanfile} ) {
