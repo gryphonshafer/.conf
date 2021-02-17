@@ -7,11 +7,31 @@ use File::Find 'find';
 use ExtUtils::Installed;
 use Mojo::Promise;
 use Mojo::UserAgent;
+use Mojo::File 'path';
 
-my $opt = options( qw( cpanfile|f=s directory|d=s@ installed|i latest|l ) );
+my $opt = options( qw( cpanfile|f=s directory|d=s@ installed|i latest|l output|o=s ) );
 
-exact->monkey_patch( 'Module::CPANfile', features => sub ($self) {
-    sort { $a->{identifier} cmp $b->{identifier} } map { $self->feature($_) } $self->{_prereqs}->identifiers;
+exact->monkey_patch( 'Module::CPANfile', to_string => sub ( $self, $include_empty = undef ) {
+    my $_d = sub ($) {
+        require Data::Dumper;
+        chomp( my $value = Data::Dumper->new( [ $_[0] ] )->Terse(1)->Dump );
+        $value;
+    };
+
+    my $code = join( "\n\n",
+        $self->_dump_mirrors( $self->mirrors ),
+        $self->_dump_prereqs( $self->prereq_specs, $include_empty ),
+        map {
+            "feature @{ [ $_d->( $_->{identifier} ) ] }, @{ [ $_d->( $_->{description} ) ] } => sub {\n" .
+            $self->_dump_prereqs( $_->{prereqs}->as_string_hash, $include_empty, 4 ) .
+            '};'
+        } sort { $a->{identifier} cmp $b->{identifier} } $self->features
+    );
+
+    $code =~ s/\n{3,}/\n\n/g;
+    $code =~ s/(^\s+|\s+$)//g;
+
+    return $code . "\n";
 } );
 
 my $cpanfile = Module::CPANfile->from_prereqs;
@@ -88,7 +108,12 @@ if ( $opt->{latest} ) {
     } )->wait;
 }
 
-say $cpanfile->to_string;
+unless ( $opt->{output} ) {
+    print $cpanfile->to_string;
+}
+else {
+    path( $opt->{output} )->spurt( $cpanfile->to_string );
+}
 
 =head1 NAME
 
@@ -97,10 +122,11 @@ perl_modules - Display information about installed or found Perl modules
 =head1 SYNOPSIS
 
     perl_modules OPTIONS
-        -c, --cpanfile  FILE  # source from cpanfile-like files
-        -d, --directory DIR   # source from Perl statements in directories
-        -i, --installed       # source from installed modules
-        -l, --latest          # set latest version numbers from CPAN
+        -c, --cpanfile FILE  # source from cpanfile-like files
+        -d, --directory DIR  # source from Perl statements in directories
+        -i, --installed      # source from installed modules
+        -l, --latest         # set latest version numbers from CPAN
+        -o, --output FILE    # if set, write to file instead of STDOUT
         -h, --help
         -m, --man
 
@@ -131,3 +157,8 @@ This option loads into base data all the currently installed Perl modules.
 
 This option will check CPAN for the latest version of base data modules and
 update their required versions to the latest versions.
+
+=head2 -o, --output
+
+Normally, output is to STDOUT. If this setting is set, it will instead be
+written to the path/file provided.
