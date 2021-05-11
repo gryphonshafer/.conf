@@ -7,7 +7,7 @@ _conf_files=( \
     gitconfig \
     screenrc \
     vim vimrc \
-    dzil perlcriticrc perltidyrc proverc yath.rc perldb replyrc \
+    dzil perlcriticrc perltidyrc proverc yath.rc perldb replyrc pause \
     sqliterc
 )
 _ssh_files=( config all_keys )

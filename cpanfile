@@ -19,6 +19,8 @@ feature 'cpan', 'cpan Modules' => sub {
     requires 'App::cpanoutdated';
     requires 'Digest::SHA';
     requires 'Module::Signature';
+    requires 'App::pause';
+    requires 'App::PAUSE::cleanup';
 };
 
 feature 'daemon', 'Daemon Build and Control' => sub {
