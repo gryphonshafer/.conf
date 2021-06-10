@@ -1,0 +1,88 @@
+#!/usr/bin/env perl
+use exact -cli;
+use Text::CSV_XS 'csv';
+
+my $opt = options( qw( input|i=s output|o=s right|r=s center|c=s ) );
+my $csv = csv( in => $opt->{input} || *STDIN );
+
+my $align = { map {
+    my $name = $_;
+    map { $_ - 1 => $name } grep { /\d/ } split( /\D+/, $opt->{$name} || '' )
+} qw( right center ) };
+
+my $width;
+for my $record (@$csv) {
+    for my $column ( 0 .. @$record - 1 ) {
+        my $length = length $record->[$column];
+        $width->[$column] = $length if ( $length > ( $width->[$column] || 0 ) );
+    }
+}
+
+my @rows = map {
+    my $record = $_;
+
+    '| ' . join( ' | ',
+        map {
+            my $column = $_;
+            my $space  = $width->[$column] - length( $record->[$column] );
+
+            ( not $align->{$column} )
+                ? $record->[$column] . ( ' ' x $space ) :
+            ( $align->{$column} eq 'right' )
+                ? ( ' ' x $space ) . $record->[$column] :
+            ( $align->{$column} eq 'center' )
+                ? ( ' ' x int( $space / 2 ) ) . $record->[$column] . ( ' ' x int( ( $space + 1 ) / 2 ) ) :
+                    $record->[$column];
+        } ( 0 .. @$record - 1 )
+    ) . ' |';
+} @$csv;
+
+splice( @rows, 1, 0,
+    '|' . join( '|', map {
+        ( not $align->{$_} )
+            ? '-' x ( $width->[$_] + 2 ) :
+        ( $align->{$_} eq 'right' )
+            ? '-' x ( $width->[$_] + 1 ) . ':' :
+        ( $align->{$_} eq 'center' )
+            ? ':' . '-' x $width->[$_] . ':' :
+                '-';
+    } 0 .. @$width - 1 ) . '|'
+);
+
+say join( "\n", @rows );
+
+=head1 NAME
+
+csv2md - Convert CSV input into a Markdown table
+
+=head1 SYNOPSIS
+
+    csv2md OPTIONS
+        -i, --input  FILE  # input CSV file (optional; defaults to STDIN)
+        -o, --output FILE  # output Markdown file (optional; defaults to STDOUT)
+        -r, --right  2,3   # columns to right-align
+        -c, --center 4,5   # columns to center-align
+        -h, --help
+        -m, --man
+
+=head1 DESCRIPTION
+
+This program will convert CSV input into a Markdown table.
+
+=head1 OPTIONS
+
+=head2 -i, --input
+
+This sets an input file. If not set, STDIN is assumed as default.
+
+=head2 -o, --output
+
+This sets an output file. If not set, STDOUT is assumed as default.
+
+=head2 -r, --right
+
+Specify a comma-separated list of columns to right-align.
+
+=head2 -c, --center
+
+Specify a comma-separated list of columns to center-align.
