@@ -101,13 +101,19 @@ if ( $opt->{latest} ) {
 
     Mojo::Promise->all(@$promises)->then( sub {
         for my $i ( 0 .. @_ - 1 ) {
-            if ( my $version = $_[$i]->[0]->result->dom->at('span[itemprop="softwareVersion"]') ) {
+            my $element = $_[$i]->[0]->result->dom->find('div.main-content ul.nav-list > li')->grep( sub {
+                $_->text =~ /module\s+version:\s*[\d\.]+/i;
+            } )->first;
+
+            my ($version) = ($element) ? $element->text =~ /module\s+version:\s*([\d\.]+)/i : undef;
+
+            if ($version) {
                 $requirements->[$i]{version} = (
                     grep { $_ eq $requirements->[$i]->{name} } qw(
                         File::Find
                         File::Copy
                     )
-                ) ? 0 : $version->text || 0;
+                ) ? 0 : $version || 0;
             }
         }
     } )->wait;
