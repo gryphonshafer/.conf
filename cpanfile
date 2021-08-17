@@ -1,174 +1,173 @@
 feature 'cli', 'CLI Utilities' => sub {
-    requires 'Config::App';
-    requires 'Time::DoAfter';
-    requires 'Util::CommandLine';
+    requires 'Config::App', '1.13';
+    requires 'Time::DoAfter', '1.07';
+    requires 'Util::CommandLine', '1.06';
 };
 
 feature 'cover', 'Coverage Analysis' => sub {
-    requires 'Devel::Cover';
-    requires 'JSON::MaybeXS';
-    requires 'PPI::HTML';
-    requires 'Parallel::Iterator';
-    requires 'Pod::Coverage';
+    requires 'Devel::Cover', '1.36';
+    requires 'JSON::MaybeXS', '1.004003';
+    requires 'PPI::HTML', '1.08';
+    requires 'Parallel::Iterator', '1.00';
+    requires 'Pod::Coverage', '0.23';
     requires 'Pod::Coverage::CountParents';
-    requires 'Template';
+    requires 'Template', '3.009';
 };
 
 feature 'cpan', 'cpan Modules' => sub {
-    requires 'App::cpanminus';
-    requires 'App::cpanoutdated';
-    requires 'Digest::SHA';
-    requires 'Module::Signature';
-    requires 'App::pause';
-    requires 'App::PAUSE::cleanup';
+    requires 'App::PAUSE::cleanup', '0.0014';
+    requires 'App::cpanminus', '1.7044';
+    requires 'App::cpanoutdated', '0.32';
+    requires 'App::pause', '0.655';
+    requires 'Digest::SHA', '6.02';
+    requires 'Module::Signature', '0.87';
 };
 
 feature 'daemon', 'Daemon Build and Control' => sub {
-    requires 'Daemon::Control';
-    requires 'Daemon::Device';
+    requires 'Daemon::Control', '0.001010';
+    requires 'Daemon::Device', '1.09';
 };
 
 feature 'data', 'Data Access Channels' => sub {
-    requires 'DBIx::Query';
-    requires 'JSON::XS';
-    requires 'YAML::XS';
+    requires 'DBIx::Query', '1.12';
+    requires 'JSON::XS', '4.03';
+    requires 'YAML::XS', '0.83';
 };
 
 feature 'datetime', 'Dates and Times' => sub {
-    requires 'Date::Format';
-    requires 'Date::Parse';
-    requires 'DateTime';
-    requires 'DateTime::Duration';
-    requires 'DateTime::Format::Human::Duration';
+    requires 'Date::Format', '2.24';
+    requires 'Date::Parse', '2.33';
+    requires 'DateTime', '1.54';
+    requires 'DateTime::Duration', '1.54';
+    requires 'DateTime::Format::Human::Duration', '0.64';
 };
 
 feature 'deploy', 'Deployment Tools' => sub {
-    requires 'App::Dest';
-    requires 'Sub::Versions';
+    requires 'App::Dest', '1.30';
+    requires 'Sub::Versions', '1.04';
 };
 
 feature 'develop', 'Development Tools' => sub {
-    requires 'Benchmark';
-    requires 'Data::Printer';
-    requires 'Devel::NYTProf';
-    requires 'Perl::Critic';
-    requires 'Perl::Tidy';
-    requires 'Term::ANSIColor';
-    requires 'Term::ReadKey';
+    requires 'Benchmark', '1.23';
+    requires 'Data::Printer', '1.000004';
+    requires 'Devel::NYTProf', '6.10';
+    requires 'Perl::Critic', '1.140';
+    requires 'Perl::Tidy', '20210717';
+    requires 'Term::ANSIColor', '5.01';
+    requires 'Term::ReadKey', '2.38';
     requires 'Term::ReadLine::Perl';
 };
 
 feature 'dzil', 'Dist::Zilla and Plugins' => sub {
-    requires 'Archive::Tar::Wrapper';
-    requires 'Dist::Zilla';
-    requires 'Dist::Zilla::Plugin::Clean';
-    requires 'Dist::Zilla::Plugin::GithubMeta';
-    requires 'Dist::Zilla::Plugin::MinimumPerl';
-    requires 'Dist::Zilla::Plugin::OurPkgVersion';
-    requires 'Dist::Zilla::Plugin::PodWeaver';
-    requires 'Dist::Zilla::Plugin::ReadmeAnyFromPod';
-    requires 'Dist::Zilla::Plugin::Run::AfterBuild';
-    requires 'Dist::Zilla::Plugin::Test::Compile';
-    requires 'Dist::Zilla::Plugin::Test::EOL';
-    requires 'Dist::Zilla::Plugin::Test::Kwalitee';
-    requires 'Dist::Zilla::Plugin::Test::NoTabs';
-    requires 'Dist::Zilla::Plugin::Test::Portability';
-    requires 'Dist::Zilla::Plugin::Test::Synopsis';
-    requires 'Dist::Zilla::PluginBundle::Git';
-    requires 'Pod::Elemental::Transformer::List';
+    requires 'Archive::Tar::Wrapper', '0.38';
+    requires 'Dist::Zilla', '6.024';
+    requires 'Dist::Zilla::Plugin::Clean', '0.07';
+    requires 'Dist::Zilla::Plugin::GithubMeta', '0.58';
+    requires 'Dist::Zilla::Plugin::MinimumPerl', '1.006';
+    requires 'Dist::Zilla::Plugin::OurPkgVersion', '0.21';
+    requires 'Dist::Zilla::Plugin::PodWeaver', '4.009';
+    requires 'Dist::Zilla::Plugin::ReadmeAnyFromPod', '0.163250';
+    requires 'Dist::Zilla::Plugin::Run::AfterBuild', '0.048';
+    requires 'Dist::Zilla::Plugin::Test::Compile', '2.058';
+    requires 'Dist::Zilla::Plugin::Test::EOL', '0.19';
+    requires 'Dist::Zilla::Plugin::Test::Kwalitee', '2.12';
+    requires 'Dist::Zilla::Plugin::Test::NoTabs', '0.15';
+    requires 'Dist::Zilla::Plugin::Test::Portability', '2.001000';
+    requires 'Dist::Zilla::Plugin::Test::Synopsis', '2.000007';
+    requires 'Dist::Zilla::PluginBundle::Git', '2.048';
+    requires 'Pod::Elemental::Transformer::List', '0.102000';
 };
 
 feature 'encryption', 'Encryption and Hashing' => sub {
-    requires 'Crypt::Blowfish';
-    requires 'Crypt::CBC';
-    requires 'Digest::HMAC_SHA1';
-    requires 'Digest::MD5';
-    requires 'Digest::SHA1';
+    requires 'Crypt::Blowfish', '2.14';
+    requires 'Crypt::CBC', '3.04';
+    requires 'Digest::HMAC_SHA1', '1.04';
+    requires 'Digest::MD5', '2.58';
+    requires 'Digest::SHA1', '2.13';
 };
 
 feature 'exact', 'exact Modules' => sub {
-    requires 'exact';
-    requires 'exact::class';
-    requires 'exact::cli';
-    requires 'exact::conf';
-    requires 'exact::lib';
-    requires 'exact::me';
+    requires 'exact', '1.17';
+    requires 'exact::class', '1.15';
+    requires 'exact::cli', '1.05';
+    requires 'exact::conf', '1.05';
+    requires 'exact::lib', '1.02';
+    requires 'exact::me', '1.03';
 };
 
 feature 'files', 'File System Tools' => sub {
-    requires 'File::Path';
-    requires 'IO::All';
+    requires 'File::Path', '2.18';
+    requires 'IO::All', '0.87';
 };
 
 feature 'html', 'HTML and URL Processing' => sub {
-    requires 'Convert::Base32';
-    requires 'HTML::FormatText';
-    requires 'HTML::TokeParser::Simple';
-    requires 'HTML::TreeBuilder';
-    requires 'URI::Escape';
+    requires 'Convert::Base32', '0.06';
+    requires 'HTML::FormatText', '2.16';
+    requires 'HTML::TokeParser::Simple', '3.16';
+    requires 'HTML::TreeBuilder', '5.07';
+    requires 'URI::Escape', '5.09';
 };
 
 feature 'logging', 'Logging Tools' => sub {
-    requires 'Log::Dispatch';
-    requires 'Log::Dispatch::Email::Mailer';
+    requires 'Log::Dispatch', '2.70';
+    requires 'Log::Dispatch::Email::Mailer', '1.11';
 };
 
 feature 'mail', 'Mail Utilities' => sub {
-    requires 'Email::Mailer';
-    requires 'Email::Simple';
-    requires 'Mail::Sender';
-    requires 'Net::IMAP::Simple';
-    requires 'Template';
+    requires 'Email::Mailer', '1.18';
+    requires 'Email::Simple', '2.216';
+    requires 'Mail::Sender', '0.903';
+    requires 'Net::IMAP::Simple', '1.2212';
+    requires 'Template', '3.009';
 };
 
 feature 'mojo', 'Mojolicious Development' => sub {
-    requires 'Input::Validator';
-    requires 'MojoX::Log::Dispatch::Simple';
-    requires 'Mojolicious';
-    requires 'Mojolicious::Plugin::AccessLog';
-    requires 'Mojolicious::Plugin::Directory';
-    requires 'Mojolicious::Plugin::ToolkitRenderer';
-    requires 'Template';
-    requires 'Text::MultiMarkdown';
+    requires 'Input::Validator', '0.001005';
+    requires 'MojoX::Log::Dispatch::Simple', '1.09';
+    requires 'Mojolicious', '9.21';
+    requires 'Mojolicious::Plugin::AccessLog', '0.010001';
+    requires 'Mojolicious::Plugin::Directory', '0.14';
+    requires 'Mojolicious::Plugin::ToolkitRenderer', '1.10';
+    requires 'Template', '3.009';
+    requires 'Text::MultiMarkdown', '1.000035';
 };
 
 feature 'moose', 'Moose Development' => sub {
-    requires 'Moose';
-    requires 'MooseX::ClassAttribute';
-    requires 'MooseX::MarkAsMethods';
-    requires 'MooseX::NonMoose';
-    requires 'Test::Moose';
-    requires 'Throwable::Error';
+    requires 'Moose', '2.2015';
+    requires 'MooseX::ClassAttribute', '0.29';
+    requires 'MooseX::MarkAsMethods', '0.15';
+    requires 'MooseX::NonMoose', '0.26';
+    requires 'Test::Moose', '2.2015';
+    requires 'Throwable::Error', '1.000';
 };
 
 feature 'reply', 'Reply REPL CLI Environment' => sub {
-    requires 'B::Keywords';
-    requires 'Carp::Always';
-    requires 'Class::Refresh';
-    requires 'Data::Printer';
-    requires 'IO::Pager';
-    requires 'Proc::InvokeEditor';
-    requires 'Reply';
-    requires 'Reply::Plugin::ConfigurablePrompt';
-    requires 'Reply::Plugin::Pager';
-    requires 'Term::ReadKey';
+    requires 'B::Keywords', '1.22';
+    requires 'Carp::Always', '0.16';
+    requires 'Class::Refresh', '0.07';
+    requires 'Data::Printer', '1.000004';
+    requires 'IO::Pager', '2.10';
+    requires 'Proc::InvokeEditor', '1.13';
+    requires 'Reply', '0.42';
+    requires 'Reply::Plugin::ConfigurablePrompt', '0.02';
+    requires 'Reply::Plugin::Pager', '0.42';
+    requires 'Term::ReadKey', '2.38';
     requires 'Term::ReadLine::Perl';
 };
 
 feature 'test', 'Testing Tools' => sub {
-    requires 'Pod::Coverage::TrustPod';
-    requires 'Test2::Harness';
-    requires 'Test2::V0';
-    requires 'Test::CheckManifest';
-    requires 'Test::EOL';
-    requires 'Test::Kwalitee';
+    requires 'Pod::Coverage::TrustPod', '0.100005';
+    requires 'Test2::Harness', '1.000066';
+    requires 'Test2::V0', '0.000141';
+    requires 'Test::CheckManifest', '1.42';
+    requires 'Test::EOL', '2.02';
+    requires 'Test::Kwalitee', '1.28';
     requires 'Test::MockModule';
-    requires 'Test::Most';
-    requires 'Test::NoTabs';
-    requires 'Test::Pod';
-    requires 'Test::Pod::Coverage';
-    requires 'Test::Synopsis';
-    requires 'Test::WWW::Mechanize';
-    requires 'WWW::Mechanize';
+    requires 'Test::Most', '0.37';
+    requires 'Test::NoTabs', '2.02';
+    requires 'Test::Pod', '1.52';
+    requires 'Test::Pod::Coverage', '1.10';
+    requires 'Test::Synopsis', '0.16';
+    requires 'Test::WWW::Mechanize', '1.54';
+    requires 'WWW::Mechanize', '2.04';
 };
-
