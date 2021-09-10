@@ -9,7 +9,8 @@ use Mojo::Promise;
 use Mojo::UserAgent;
 use Mojo::File 'path';
 
-my $opt = options( qw( cpanfile|f=s directory|d=s@ installed|i latest|l output|o=s ) );
+my $opt = options( qw( cpanfile|f=s directory|d=s@ installed|i latest|l output|o=s update|u ) );
+$opt->{cpanfile} = $opt->{output} = $opt->{latest} = 'cpanfile' if ( $opt->{update} );
 
 exact->monkey_patch( 'Module::CPANfile', to_string => sub ( $self, $include_empty = undef ) {
     my $_d = sub ($) {
@@ -128,16 +129,17 @@ else {
 
 =head1 NAME
 
-perl_modules - Display information about installed or found Perl modules
+cpanz - Display information about installed or found Perl modules
 
 =head1 SYNOPSIS
 
-    perl_modules OPTIONS
+    cpanz OPTIONS
         -c, --cpanfile FILE  # source from cpanfile-like files
         -d, --directory DIR  # source from Perl statements in directories
         -i, --installed      # source from installed modules
         -l, --latest         # set latest version numbers from CPAN
         -o, --output FILE    # if set, write to file instead of STDOUT
+        -u, --update         # same as setting "-c cpanfile -l -o cpanfile"
         -h, --help
         -m, --man
 
@@ -173,3 +175,7 @@ update their required versions to the latest versions.
 
 Normally, output is to STDOUT. If this setting is set, it will instead be
 written to the path/file provided.
+
+=head2 -u, --update
+
+Exactly the same as setting "-c cpanfile -l -o cpanfile" options.
