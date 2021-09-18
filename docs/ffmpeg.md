@@ -11,3 +11,7 @@
 ## Replace an audio stream
 
     ffmpeg -i video.mp4 -i audio.wav -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 output.mp4
+
+## Split MP3
+
+    ffmpeg -i story.mp3 -f segment -segment_time 600 -c copy story_%03d.mp3
