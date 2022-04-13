@@ -23,7 +23,3 @@ Host vmssh
 Host titanic
     HostName localhost
     Port 4231
-
-Host git-codecommit.*.amazonaws.com
-    User APKAYSIDXGZVHCVZ7RTI
-    IdentityFile ~/.ssh/id_rsa.syzygy_aws_git
