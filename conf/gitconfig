@@ -9,9 +9,6 @@
     commentchar = auto
     whitespace  = fix,-indent-with-non-tab,trailing-space,cr-at-eol
 
-[incude]
-    path = ~/.local_gitconfig
-
 [diff]
     # git diff will use (i)ndex, (w)ork tree, (c)ommit and (o)bject
     # instead of a/b/c/d as prefixes for patches
@@ -200,3 +197,6 @@
     supdate = submodule update --remote --merge
 
     permission-reset = !git diff -p -R | grep -E \"^(diff|(old|new) mode)\" | git apply
+
+[include]
+    path = ~/.local_gitconfig
