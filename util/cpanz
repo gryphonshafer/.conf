@@ -102,7 +102,7 @@ if ( $opt->{latest} ) {
 
     Mojo::Promise->all(@$promises)->then( sub {
         for my $i ( 0 .. @_ - 1 ) {
-            my $element = $_[$i]->[0]->result->dom->find('div.main-content ul.nav-list > li')->grep( sub {
+            my $element = $_[$i]->[0]->result->dom->find('div.page-content ul.nav-list > li')->grep( sub {
                 $_->text =~ /module\s+version:\s*[\d\.]+/i;
             } )->first;
 
