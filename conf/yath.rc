@@ -1,5 +1,4 @@
 [test]
 --qvf ; quite but vervose on failure
 -T    ; show test time
--L    ; turn on logging (logs saved in system temp dir)
 --job-count 4
