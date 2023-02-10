@@ -81,3 +81,9 @@ function mx {
     mf $1
     chmod a+x $1
 }
+
+function xcd {
+    local _dir=$( echo -E $1 | sed 's/^[A-Z]://' | sed 's/\\/\//g' | xargs dirname )
+    echo '~'$_dir
+    cd $HOME/$_dir
+}
