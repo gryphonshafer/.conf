@@ -32,6 +32,7 @@ alias matrix='tr -c "[:digit:]" " " < /dev/urandom | dd cbs=$COLUMNS conv=unbloc
 alias epoch="date +%s"
 
 alias c="clear"
+alias pt="ping 1.1.1.1"
 
 function calc {
     awk "BEGIN { print $* }";
@@ -73,6 +74,7 @@ function mcd {
 }
 
 function mf {
+    mkdir -p $(dirname "$1")
     echo '' > $1
 }
 
