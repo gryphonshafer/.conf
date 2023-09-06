@@ -3,7 +3,6 @@
     email = gryphon@goldenguru.com
 
 [core]
-    filemode     = true
     editor       = vim
     autocrlf     = false
     commentchar  = auto
