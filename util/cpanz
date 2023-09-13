@@ -124,7 +124,7 @@ unless ( $opt->{output} ) {
     print $cpanfile->to_string;
 }
 else {
-    path( $opt->{output} )->spurt( $cpanfile->to_string );
+    path( $opt->{output} )->spew( $cpanfile->to_string );
 }
 
 =head1 NAME

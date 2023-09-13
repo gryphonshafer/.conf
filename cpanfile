@@ -1,3 +1,8 @@
+feature '_cpan', 'CPAN Verification' => sub {
+    requires 'Digest::SHA', '6.04';
+    requires 'Module::Signature', '0.88';
+};
+
 feature 'bible', 'Bible Utilities' => sub {
     requires 'Bible::OBML', '2.06';
     requires 'Bible::OBML::Gateway', '2.07';
@@ -5,7 +10,7 @@ feature 'bible', 'Bible Utilities' => sub {
 };
 
 feature 'bot', 'IRC Bot' => sub {
-    requires 'Bot::IRC', '1.39';
+    requires 'Bot::IRC', '1.40';
     requires 'Bot::IRC::X::Dice', '1.06';
     requires 'Bot::IRC::X::Feeds', '1.07';
     requires 'Bot::IRC::X::ManagementSpeak', '1.04';
@@ -23,7 +28,7 @@ feature 'cli', 'CLI Utilities' => sub {
     requires 'Util::CommandLine', '1.07';
 };
 
-feature 'cover', 'Coverage Analysis' => sub {
+feature 'coverage', 'Coverage Analysis' => sub {
     requires 'Devel::Cover', '1.40';
     requires 'JSON::MaybeXS', '1.004005';
     requires 'PPI::HTML', '1.08';
@@ -33,14 +38,12 @@ feature 'cover', 'Coverage Analysis' => sub {
     requires 'Template', '3.101';
 };
 
-feature 'cpan', 'cpan Modules' => sub {
+feature 'cpan', 'CPAN Utilities' => sub {
     requires 'App::PAUSE::cleanup', '0.0014';
     requires 'App::cpanminus', '1.7047';
     requires 'App::cpanoutdated', '0.32';
     requires 'App::pause', '0.659';
-    requires 'Digest::SHA', '6.04';
     requires 'Module::CPANfile', '1.1004';
-    requires 'Module::Signature', '0.88';
     requires 'Perl::PrereqScanner', '1.100';
 };
 
@@ -65,7 +68,7 @@ feature 'datetime', 'Dates and Times' => sub {
 };
 
 feature 'deploy', 'Deployment Tools' => sub {
-    requires 'App::Dest', '1.31';
+    requires 'App::Dest', '1.32';
     requires 'Sub::Versions', '1.05';
 };
 
@@ -74,7 +77,7 @@ feature 'develop', 'Development Tools' => sub {
     requires 'Data::Printer', '1.001001';
     requires 'Devel::NYTProf', '6.12';
     requires 'Perl::Critic', '1.150';
-    requires 'Perl::Tidy', '20230701';
+    requires 'Perl::Tidy', '20230912';
     requires 'Term::ANSIColor', '5.01';
     requires 'Term::ReadKey', '2.38';
     requires 'Term::ReadLine::Perl';
@@ -109,12 +112,13 @@ feature 'encryption', 'Encryption and Hashing' => sub {
 };
 
 feature 'exact', 'exact Modules' => sub {
-    requires 'exact', '1.19';
-    requires 'exact::class', '1.16';
-    requires 'exact::cli', '1.06';
-    requires 'exact::conf', '1.07';
-    requires 'exact::lib', '1.03';
-    requires 'exact::me', '1.04';
+    requires 'exact', '1.23';
+    requires 'exact::class', '1.19';
+    requires 'exact::cli', '1.07';
+    requires 'exact::conf', '1.08';
+    requires 'exact::fun', '1.01';
+    requires 'exact::lib', '1.04';
+    requires 'exact::me', '1.05';
 };
 
 feature 'files', 'File System Tools' => sub {
@@ -127,12 +131,12 @@ feature 'html', 'HTML and URL Processing' => sub {
     requires 'HTML::FormatText', '2.16';
     requires 'HTML::TokeParser::Simple', '3.16';
     requires 'HTML::TreeBuilder', '5.07';
-    requires 'URI::Escape', '5.19';
+    requires 'URI::Escape', '5.21';
 };
 
 feature 'logging', 'Logging Tools' => sub {
     requires 'Log::Dispatch', '2.71';
-    requires 'Log::Dispatch::Email::Mailer', '1.12';
+    requires 'Log::Dispatch::Email::Mailer', '1.13';
 };
 
 feature 'mail', 'Mail Utilities' => sub {
@@ -145,9 +149,8 @@ feature 'mail', 'Mail Utilities' => sub {
 feature 'misc', 'Miscellaneous Stuff' => sub {
     requires 'Auth::GoogleAuth', '1.04';
     requires 'English::Script', '1.06';
-    requires 'Filter::CommaEquals', '1.03';
     requires 'Finance::Google::Portfolio', '1.06';
-    requires 'Geo::GoogleEarth::AutoTour', '1.08';
+    requires 'Geo::GoogleEarth::AutoTour', '1.09';
     requires 'Lingua::ManagementSpeak', '1.04';
     requires 'Time::DoAfter', '1.08';
     requires 'Unit::Duration', '1.03';
@@ -157,7 +160,7 @@ feature 'mojo', 'Mojolicious Systems' => sub {
     requires 'Input::Validator', '0.001005';
     requires 'MojoX::ConfigAppStart', '1.03';
     requires 'MojoX::Log::Dispatch::Simple', '1.12';
-    requires 'Mojolicious', '9.33';
+    requires 'Mojolicious', '9.34';
     requires 'Mojolicious::Plugin::AccessLog', '0.010001';
     requires 'Mojolicious::Plugin::Directory', '0.14';
     requires 'Mojolicious::Plugin::ToolkitRenderer', '1.12';
