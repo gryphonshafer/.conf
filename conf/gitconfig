@@ -93,22 +93,25 @@
     g = grep -n -i -a --untracked
 
     # log (default: current branch)
-    l  = log --graph --date=local --pretty=format:'%C(yellow)%h %C(cyan)%ad %C(reset)%s %C(bold blue)%aN%C(auto)%d'
-    lr = log --graph --date=local --pretty=format:'%C(yellow)%h %C(cyan)%ad %C(green)(%ar) %C(reset)%s %C(bold blue)%aN%C(auto)%d'
-    ll = log --graph --date=local --name-status --decorate
-    lb = log --graph --date=local --name-status --pretty=format:'%C(yellow)%h %C(cyan)%ad %C(green)(%ar) %C(bold blue)%aN%C(reset)%C(auto)%d%n%C(bold white)%s%n'
-    lx = log --date=local --pretty=format:'%h|%aN|%ad|%ar|%s'
+    lg = log --graph --decorate --date=format:'%a %b %e %R %Y'
+    l  = lg --pretty=format:'%C(yellow)%h %C(cyan)%ad %C(reset)%s %C(bold blue)%aN%C(auto)%d'
+    lr = lg --pretty=format:'%C(yellow)%h %C(cyan)%ad %C(green)(%ar) %C(reset)%s %C(bold blue)%aN%C(auto)%d'
+    ll = lg --name-status
+    lb = lg --name-status --pretty=format:'%C(yellow)%h %C(cyan)%ad %C(green)(%ar) %C(bold blue)%aN%C(reset)%C(auto)%d%n%C(bold white)%s%n'
+    lx = log --date=unix --pretty=format:'%h | %ad | %s'
 
     # log (all branches)
-    la  = log --all --graph --date=local --pretty=format:'%C(yellow)%h %C(cyan)%ad %C(reset)%s %C(bold blue)%aN%C(auto)%d'
-    lra = log --all --graph --date=local --pretty=format:'%C(yellow)%h %C(cyan)%ad %C(green)(%ar) %C(reset)%s %C(bold blue)%aN%C(auto)%d'
-    lla = log --all --graph --date=local --name-status --decorate
-    lba = log --all --graph --date=local --name-status --pretty=format:'%C(yellow)%h %C(cyan)%ad %C(green)(%ar) %C(bold blue)%aN%C(reset)%C(auto)%d%n%C(bold white)%s%n'
-    lxa = log --all --date=local --pretty=format:'%h|%aN|%ad|%ar|%s'
+    la  = l  --all
+    lra = lr --all
+    lla = ll --all
+    lba = lb --all
+    lxa = lx --all
 
     # work log
-    lw  = log --all --date=local --reverse --author='Gryphon Shafer' --pretty=format:'%C(yellow)%h%n%C(cyan)%ad %C(reset)%n%B'
-    lwn = log --all --name-status --date=local --reverse --author='Gryphon Shafer' --pretty=format:'%C(yellow)%h%n%C(cyan)%ad %C(reset)%n%B'
+    lw  = log --all --reverse --author='Gryphon Shafer' \
+        --date=format:'%a %b %e %R %Y' \
+        --pretty=format:'%C(yellow)%h%n%C(cyan)%ad %C(reset)%n%B'
+    lwn = lw --name-status
 
     # show
     showf = show --pretty="format:" --name-only
