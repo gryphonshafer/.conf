@@ -118,6 +118,8 @@
     dc    = diff --cached
     dl    = diff HEAD^
     wdiff = diff --color-words
+    df    = diff --name-only
+    difff = diff --name-only
 
     # index add
     a  = add
