@@ -46,8 +46,8 @@ if ( length($_git_remote) > 0 and $_git_remote ne '.' and substr( $_git_branch, 
         ( run("git rev-list --left-right --count remotes/$_git_remote/$_git_branch...HEAD 2> /dev/null") )[0] || '',
     ) if ( $git_unified_version > 1007005 );
 
-    $_git_behind //= 0;
-    $_git_ahead  //= 0;
+    $_git_behind = 0 if ( not defined $_git_behind );
+    $_git_ahead  = 0 if ( not defined $_git_ahead  );
 
     if ( $_git_behind > 0 or $_git_ahead > 0 ) {
         my $_git_ahead_f  = ( $_git_ahead  > 0 ) ? '+' . $_git_ahead  : '';
