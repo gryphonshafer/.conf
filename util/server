@@ -1,10 +1,25 @@
 #!/usr/bin/env perl
+use exact;
 use Cwd;
 use Encode 'decode_utf8';
+use IO::Socket::INET;
 use Mojo::File;
 use Mojolicious::Lite;
 use Text::MultiMarkdown 'markdown';
-use exact;
+
+my $listen;
+for ( 3000 .. 3999 ) {
+    unless (
+        IO::Socket::INET->new(
+            PeerAddr => 'localhost',
+            Proto    => 'tcp',
+            PeerPort => $_,
+        )
+    ) {
+        $listen = 'http://*:' . $_;
+        last;
+    }
+}
 
 plugin( 'Directory',
     root       => cwd,
@@ -56,4 +71,6 @@ plugin( 'Directory',
             }
         }
     },
-)->start;
+);
+
+app->start( 'daemon', '-l', $listen );
