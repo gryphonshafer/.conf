@@ -24,7 +24,7 @@ feature 'bot', 'IRC Bot' => sub {
 };
 
 feature 'cli', 'CLI Utilities' => sub {
-    requires 'Config::App', '1.15';
+    requires 'Config::App', '1.17';
     requires 'Util::CommandLine', '1.07';
 };
 
@@ -62,8 +62,8 @@ feature 'data', 'Data Access Channels' => sub {
 feature 'datetime', 'Dates and Times' => sub {
     requires 'Date::Format', '2.24';
     requires 'Date::Parse', '2.33';
-    requires 'DateTime', '1.59';
-    requires 'DateTime::Duration', '1.59';
+    requires 'DateTime', '1.65';
+    requires 'DateTime::Duration', '1.65';
     requires 'DateTime::Format::Human::Duration', '0.64';
 };
 
@@ -73,10 +73,10 @@ feature 'deploy', 'Deployment Tools' => sub {
 };
 
 feature 'develop', 'Development Tools' => sub {
-    requires 'Benchmark', '1.24';
+    requires 'Benchmark', '1.23';
     requires 'Data::Printer', '1.001001';
-    requires 'Devel::NYTProf', '6.12';
-    requires 'Perl::Critic', '1.150';
+    requires 'Devel::NYTProf', '6.14';
+    requires 'Perl::Critic', '1.152';
     requires 'Perl::Tidy', '20230912';
     requires 'Term::ANSIColor', '5.01';
     requires 'Term::ReadKey', '2.38';
@@ -85,7 +85,7 @@ feature 'develop', 'Development Tools' => sub {
 
 feature 'dzil', 'Dist::Zilla and Plugins' => sub {
     requires 'Archive::Tar::Wrapper', '0.38';
-    requires 'Dist::Zilla', '6.030';
+    requires 'Dist::Zilla', '6.031';
     requires 'Dist::Zilla::Plugin::Clean', '0.07';
     requires 'Dist::Zilla::Plugin::GithubMeta', '0.58';
     requires 'Dist::Zilla::Plugin::MinimumPerl', '1.006';
@@ -160,12 +160,12 @@ feature 'mojo', 'Mojolicious Systems' => sub {
     requires 'Input::Validator', '0.001005';
     requires 'MojoX::ConfigAppStart', '1.03';
     requires 'MojoX::Log::Dispatch::Simple', '1.12';
-    requires 'Mojolicious', '9.34';
+    requires 'Mojolicious', '9.35';
     requires 'Mojolicious::Plugin::AccessLog', '0.010001';
     requires 'Mojolicious::Plugin::Directory', '0.14';
     requires 'Mojolicious::Plugin::ToolkitRenderer', '1.12';
     requires 'Template', '3.101';
-    requires 'Text::MultiMarkdown', '1.001';
+    requires 'Text::MultiMarkdown', '1.002';
 };
 
 feature 'moose', 'Moose Development' => sub {
@@ -193,8 +193,8 @@ feature 'reply', 'Reply REPL CLI Environment' => sub {
 
 feature 'test', 'Testing Tools' => sub {
     requires 'Pod::Coverage::TrustPod', '0.100006';
-    requires 'Test2::Harness', '1.000152';
-    requires 'Test2::V0', '0.000155';
+    requires 'Test2::Harness', '1.000155';
+    requires 'Test2::V0', '0.000159';
     requires 'Test::CheckManifest', '1.43';
     requires 'Test::EOL', '2.02';
     requires 'Test::Kwalitee', '1.28';
@@ -208,6 +208,6 @@ feature 'test', 'Testing Tools' => sub {
 };
 
 feature 'web', 'Web Utilities' => sub {
-    requires 'IO::Socket::SSL', '2.083';
+    requires 'IO::Socket::SSL', '2.084';
     requires 'WWW::Mechanize', '2.17';
 };
