@@ -169,5 +169,16 @@
     sd       = stash drop    # drop stashes (destory changes)
     snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
 
+    # ls-files
+    ls  = ls-files
+    lsc = ls-files --cached
+    lsd = ls-files --deleted
+    lsm = ls-files --modified
+    lso = ls-files --others
+    lsi = ls-files --ignored
+    lss = ls-files --stage
+    lsu = ls-files --unmerged
+    lsk = ls-files --killed
+
 [include]
     path = ~/.local_gitconfig
