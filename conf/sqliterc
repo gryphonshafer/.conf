@@ -2,13 +2,9 @@
 .headers   ON
 .nullvalue NULL
 
--- .load /usr/lib/sqlite3/pcre.so
+.load /usr/lib/sqlite3/sqlean
 
 PRAGMA encoding           = 'UTF-8';
 PRAGMA foreign_keys       = ON;
 PRAGMA recursive_triggers = ON;
 PRAGMA temp_store         = MEMORY;
-
--- .output /dev/null
--- PRAGMA journal_mode = WAL;
--- .output stdout
