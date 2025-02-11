@@ -1,0 +1,48 @@
+#!/usr/bin/env perl
+use exact;
+use Mojo::URL;
+use Mojo::UserAgent;
+
+my $start_url = Mojo::URL->new( $ARGV[0] // 'http://localhost:3000/' );
+my $ua        = Mojo::UserAgent->new;
+my $links     = {
+    queue => [ { url => $start_url } ],
+    done  => [],
+};
+
+while ( my $link = shift $links->{queue}->@* ) {
+    push( $links->{done}->@*, $link );
+    my $result = $ua->get( $link->{url} )->result;
+    $link->{code} = $result->code;
+
+    if ( $result->code != 200 ) {
+        print "\n";
+        say 'Location: ', ( $link->{referrer} // '>>none<<' );
+        say '    Code: ', $result->code;
+        say '  Target: ', $link->{url};
+        next;
+    }
+    next if ( $result->headers->content_type =~ /^(?:image|audio|video|application)\// );
+
+    $result->dom->find('a')
+        ->map( sub {
+            my $url = Mojo::URL->new( $_->attr('href') );
+            $url = $link->{url}->clone->path_query($url) unless ( $url->is_abs );
+            $url;
+        } )
+        ->grep( sub { index( $_->to_string, $start_url->to_string ) == 0 } )
+        ->each( sub {
+            my ($target) = @_;
+
+            push( $links->{queue}->@*, {
+                url      => $target,
+                referrer => $link->{url},
+            } )
+            unless (
+                $start_url->to_string eq $target->to_string or
+                grep { $_->{url}->to_string eq $target->to_string }
+                    $links->{done}->@*,
+                    $links->{queue}->@*,
+            );
+        } );
+}
