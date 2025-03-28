@@ -113,6 +113,7 @@ if ( $opt->{latest} ) {
                     grep { $_ eq $requirements->[$i]->{name} } qw(
                         File::Find
                         File::Copy
+                        File::Glob
                     )
                 ) ? 0 : $version || 0;
             }
