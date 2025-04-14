@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+del_perls=( perl-blead perl-5.40.0 perl-5.38.2 )
+add_perls=( perl-blead perl-5.40.2 perl-5.38.4 )
+
+for del_perl in "${del_perls[@]}"
+do
+    for lib in $( perlbrew list | grep $del_perl | grep @ | sed 's/\*//g' | sed 's/\s//g' )
+    do
+        perlbrew lib delete $lib
+    done
+done
+
+sudo su -l
+    perlbrew self-upgrade
+
+    for del_perl in "${del_perls[@]}"
+    do
+        yes | perlbrew uninstall $del_perl
+    done
+
+    for add_perl in "${add_perls[@]}"
+    do
+        perlbrew install -n $add_perl
+    done
+exit
+
+for add_perl in "${add_perls[@]}"
+do
+    perlbrew lib create $add_perl@uber
+done
+
+perlbrew switch $( perlbrew list | grep @ | grep -v 'perl-blead' | sed 's/\*//g' | sed 's/\s//g' | head -1 )
