@@ -10,7 +10,7 @@ function github_repos {
     for page in $( seq 1 $pages )
     do
         curl -s https://api.github.com/users/gryphonshafer/repos?page=$page \
-            | grep git_url | perl -pe 's/^.*"\s*:\s*"|",//g'
+            | grep ssh_url | perl -pe 's/^.*"\s*:\s*"|",//g'
     done
 }
 
