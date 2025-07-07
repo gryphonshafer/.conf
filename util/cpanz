@@ -108,6 +108,14 @@ if ( $opt->{latest} ) {
 
             my ($version) = ($element) ? $element->text =~ /module\s+version:\s*([\d\.]+)/i : undef;
 
+            unless ($version) {
+                my $jump = $_[$i]->[0]->result->dom->at('li.version-jump option:nth-of-type(2)');
+                my $jump_text = '';
+                $jump_text = $jump->text // '' if ($jump);
+                $jump_text =~ s/\s*\([^\)]*\)\s*//g;
+                $version = $jump_text;
+            }
+
             if ($version) {
                 $requirements->[$i]{version} = (
                     grep { $_ eq $requirements->[$i]->{name} } qw(
