@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-""" icdiff.py
+"""icdiff.py
 
 Author: Jeff Kaufman, derived from difflib.HtmlDiff
 
@@ -11,7 +11,7 @@ Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006 Python Software Foundation;
 All Rights Reserved
 
 Based on Python's difflib.HtmlDiff,
-with changes to provide console output instead of html output.  """
+with changes to provide console output instead of html output."""
 
 import os
 import stat
@@ -22,10 +22,9 @@ from optparse import Option, OptionParser
 import re
 import filecmp
 import unicodedata
-import codecs
 import fnmatch
 
-__version__ = "2.0.5"
+__version__ = "2.0.10"
 
 # Exit code constants
 EXIT_CODE_SUCCESS = 0
@@ -99,6 +98,7 @@ class ConsoleDiff(object):
         cols=80,
         line_numbers=False,
         show_all_spaces=False,
+        show_no_spaces=False,
         highlight=False,
         truncate=False,
         strip_trailing_cr=False,
@@ -118,6 +118,7 @@ class ConsoleDiff(object):
         self.line_numbers = line_numbers
         self.cols = cols
         self.show_all_spaces = show_all_spaces
+        self.show_no_spaces = show_no_spaces
         self.highlight = highlight
         self.strip_trailing_cr = strip_trailing_cr
         self.truncate = truncate
@@ -169,10 +170,10 @@ class ConsoleDiff(object):
     def _display_len(self, s):
         # Handle wide characters like Chinese.
         def width(c):
-            if (
-                isinstance(c, type(""))
-                and unicodedata.east_asian_width(c) in ["F", "W"]
-            ):
+            if isinstance(c, type("")) and unicodedata.east_asian_width(c) in [
+                "F",
+                "W",
+            ]:
                 return 2
             elif c == "\r":
                 return 2
@@ -469,7 +470,15 @@ class ConsoleDiff(object):
         if self.highlight:
             return s
 
-        if not self.show_all_spaces:
+        if self.show_no_spaces:
+            # Don't show whitespace even if it's a whitespace-only line.
+            return re.sub(
+                "\033\\[[01];3([01234567])m(\\s+)(\033\\[)",
+                "\033[0;3\\1m\\2\\3",
+                s,
+            )
+
+        elif not self.show_all_spaces:
             # If there's a change consisting entirely of whitespace,
             # don't color it.
             return re.sub(
@@ -643,6 +652,12 @@ def create_option_parser():
         "that which is not needed for drawing the eye to "
         "changes.  Slow, ugly, displays all changes",
     )
+    parser.add_option(
+        "--show-no-spaces",
+        default=False,
+        action="store_true",
+        help="don't color whitespace-only changes",
+    )
     parser.add_option("--tabsize", default=8, help="tab stop spacing")
     parser.add_option(
         "-t",
@@ -743,7 +758,7 @@ def set_cols_option(options):
                 import struct
 
                 cr = struct.unpack(
-                    "hh", fcntl.ioctl(fd, termios.TIOCGWINSZ, "1234")
+                    "hhhh", fcntl.ioctl(fd, termios.TIOCGWINSZ, "12345678")
                 )
             except Exception:
                 return None
@@ -861,7 +876,7 @@ def diff(options, a, b):
 
 def read_file(fname, options):
     try:
-        with codecs.open(fname, encoding=options.encoding, mode="rb") as inf:
+        with open(fname, encoding=options.encoding, newline="") as inf:
             return inf.readlines()
     except UnicodeDecodeError as e:
         codec_print(
@@ -940,7 +955,7 @@ def diff_files(options, a, b):
         ]
 
     # Determine if a difference has been detected
-    diff_found = len(lines_a) or len(lines_b) or not cmp_perms(options, a, b)
+    diff_found = lines_a != lines_b or not cmp_perms(options, a, b)
 
     if options.no_bold:
         for key in color_mapping:
@@ -990,6 +1005,7 @@ def diff_files(options, a, b):
     cd = ConsoleDiff(
         cols=int(options.cols),
         show_all_spaces=options.show_all_spaces,
+        show_no_spaces=options.show_no_spaces,
         highlight=options.highlight,
         line_numbers=options.line_numbers,
         tabsize=int(options.tabsize),
