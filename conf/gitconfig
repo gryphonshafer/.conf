@@ -8,10 +8,10 @@
     commentchar  = auto
     whitespace   = fix,-indent-with-non-tab,trailing-space,cr-at-eol
     excludesFile = ~/.gitignore
-    pager        = "diff-so-fancy | less --tabs=4 -RF"
+    pager        = diff-so-fancy | less --tabs=4 -RF
 
 [interactive]
-    diffFilter = "diff-so-fancy --patch"
+    diffFilter = diff-so-fancy --patch
 
 [diff]
     # git diff will use (i)ndex, (w)ork tree, (c)ommit and (o)bject
@@ -72,11 +72,19 @@
     upstream = blue bold
 
 [color "diff"]
-    meta       = yellow bold
+    meta       = 11
     frag       = magenta bold
+    func       = 146 bold
+    commit     = yellow bold
     old        = red bold
     new        = green bold
     whitespace = red reverse
+
+[color "diff-highlight"]
+    oldNormal    = red bold
+    oldHighlight = red bold 52
+    newNormal    = green bold
+    newHighlight = green bold 22
 
 [color "status"]
     added     = yellow
