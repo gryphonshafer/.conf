@@ -196,6 +196,7 @@ feature 'reply', 'Reply REPL CLI Environment' => sub {
 feature 'test', 'Testing Tools' => sub {
     requires 'Pod::Coverage::TrustPod', '0.100006';
     requires 'Test2::Harness', '1.000161';
+    requires 'Test2::Plugin::NoWarnings';
     requires 'Test2::V0', '1.302214';
     requires 'Test::CheckManifest', '1.43';
     requires 'Test::EOL', '2.02';
