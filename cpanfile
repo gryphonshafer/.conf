@@ -208,6 +208,7 @@ feature 'test', 'Testing Tools' => sub {
     requires 'Test::Pod::Coverage', '1.10';
     requires 'Test::Synopsis', '0.17';
     requires 'Test::WWW::Mechanize', '1.60';
+    requires 'UUID';
 };
 
 feature 'web', 'Web Utilities' => sub {
