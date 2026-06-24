@@ -201,6 +201,7 @@ feature 'test', 'Testing Tools' => sub {
     requires 'Test::CheckManifest', '1.43';
     requires 'Test::EOL', '2.02';
     requires 'Test::Kwalitee', '1.28';
+    requires 'Test::Lib', '0.003';
     requires 'Test::MockModule';
     requires 'Test::Most', '0.38';
     requires 'Test::NoTabs', '2.02';
